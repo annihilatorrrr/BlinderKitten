@@ -80,7 +80,7 @@ void DMXSACNDevice::sendDMXValuesInternal()
 
     e131_packet_t* senderPacket = &packet;
     int packetNumChannels = ntohs(senderPacket->dmp.prop_val_cnt) - 1;
-
+    senderPacket->frame.priority = priority->intValue();
     //String ip = remoteHost->stringValue();
 
     memcpy(senderPacket->dmp.prop_val + 1, dmxBuffer, 512);
