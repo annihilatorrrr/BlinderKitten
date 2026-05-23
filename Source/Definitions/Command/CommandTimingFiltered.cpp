@@ -9,25 +9,22 @@
 */
 
 #include "JuceHeader.h"
-#include "CommandTiming.h"
+#include "CommandTimingFiltered.h"
+#include "Definitions/ChannelFamily/ChannelFamilyManager.h"
 
-CommandTiming::CommandTiming(var params) :
-	ControllableContainer("Timing"),
+CommandTimingFiltered::CommandTimingFiltered(var params) :
+	BaseItem("Timing"),
 	objectData(params),
 	delayMult("Delay multiplicators"),
-	fadeMult("Fade multiplicators"),
-	filteredManager()
+	fadeMult("Fade multiplicators")
 {
 	saveAndLoadRecursiveData = true;
 	editorIsCollapsed = false;
 
-	presetOrValue = addEnumParameter("Timing type", "What kind of timing do you want to apply ?");
-	presetOrValue->addOption("Cue timing", "cue");
-	presetOrValue->addOption("Raw Timing", "raw");
-	presetOrValue->addOption("Preset", "preset");
-	presetOrValue->addOption("Channel filtered", "filtered");
-
-	presetId = addIntParameter("ID", "ID of the preset", 1, 1);
+	filter = addTargetParameter("Filter", "Select a family or a channel type that will be targeted by this timing, leave empty applies for all.", ChannelFamilyManager::getInstance());
+	filter-> targetType = TargetParameter::CONTAINER;
+	filter->typesFilter.add("ChannelFamily");
+	filter->typesFilter.add("ChannelType");
 
 	// to add a manager with defined data
 	delayFrom = addFloatParameter("Delay", "delay of the first element (in seconds)", 0, 0);
@@ -78,8 +75,6 @@ CommandTiming::CommandTiming(var params) :
 	curveFadeRepart.selectItemWhenCreated = false;
 	curveFadeRepart.editorCanBeCollapsed = true;
 
-	addChildControllableContainer(&filteredManager);
-
 	addChildControllableContainer(&curveFade);
 	addChildControllableContainer(&curveDelayRepart);
 	addChildControllableContainer(&curveFadeRepart);
@@ -90,21 +85,15 @@ CommandTiming::CommandTiming(var params) :
 	updateDisplay();
 }
 
-CommandTiming::~CommandTiming()
+CommandTimingFiltered::~CommandTimingFiltered()
 {
 }
 
-void CommandTiming::updateDisplay()
+void CommandTimingFiltered::updateDisplay()
 {
-	bool prst = presetOrValue->getValue() == "preset";
-	bool raw = presetOrValue->getValue() == "raw";
-	bool filtered = presetOrValue->getValue() == "filtered";
+	bool raw = true;
 	bool thd = thruDelay->getValue();
 	bool thf = thruFade->getValue();
-
-	filteredManager.hideInEditor = !filtered;
-
-	presetId->hideInEditor = !prst;
 
 	// to add a manager with defined data
 	delayFrom->hideInEditor = !raw;
@@ -126,14 +115,14 @@ void CommandTiming::updateDisplay()
 	queuedNotifier.addMessage(new ContainerAsyncEvent(ContainerAsyncEvent::ControllableContainerNeedsRebuild, this));
 }
 
-void CommandTiming::parameterValueChanged(Parameter* p) {
+void CommandTimingFiltered::parameterValueChanged(Parameter* p) {
 	ControllableContainer::parameterValueChanged( p);
-	if (p == thruDelay || p == thruFade || p == presetOrValue) {
+	if (p == thruDelay || p == thruFade) {
 		updateDisplay();
 	}
 }
 
-void CommandTiming::afterLoadJSONDataInternal() {
+void CommandTimingFiltered::afterLoadJSONDataInternal() {
 	updateDisplay();
 }
 

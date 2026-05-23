@@ -472,6 +472,14 @@
           <FILE id="i1oQzK" name="CommandTiming.cpp" compile="1" resource="0"
                 file="Source/Definitions/Command/CommandTiming.cpp"/>
           <FILE id="TPO5D5" name="CommandTiming.h" compile="0" resource="0" file="Source/Definitions/Command/CommandTiming.h"/>
+          <FILE id="v1ckjX" name="CommandTimingFiltered.cpp" compile="1" resource="0"
+                file="Source/Definitions/Command/CommandTimingFiltered.cpp"/>
+          <FILE id="wMzU8E" name="CommandTimingFiltered.h" compile="0" resource="0"
+                file="Source/Definitions/Command/CommandTimingFiltered.h"/>
+          <FILE id="v4d1f8" name="CommandTimingFilteredManager.cpp" compile="1"
+                resource="0" file="Source/Definitions/Command/CommandTimingFilteredManager.cpp"/>
+          <FILE id="wLyujh" name="CommandTimingFilteredManager.h" compile="0"
+                resource="0" file="Source/Definitions/Command/CommandTimingFilteredManager.h"/>
           <FILE id="drnnYK" name="CommandValue.cpp" compile="1" resource="0"
                 file="Source/Definitions/Command/CommandValue.cpp"/>
           <FILE id="BLR3Qo" name="CommandValue.h" compile="0" resource="0" file="Source/Definitions/Command/CommandValue.h"/>

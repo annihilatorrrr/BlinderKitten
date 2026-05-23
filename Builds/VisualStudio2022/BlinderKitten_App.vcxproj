@@ -338,6 +338,8 @@
     <ClCompile Include="..\..\Source\Definitions\Command\CommandSelection.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Command\CommandSelectionManager.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Command\CommandTiming.cpp"/>
+    <ClCompile Include="..\..\Source\Definitions\Command\CommandTimingFiltered.cpp"/>
+    <ClCompile Include="..\..\Source\Definitions\Command\CommandTimingFilteredManager.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Command\CommandValue.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Command\CommandValueManager.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Command\MoveInBlackManager.cpp"/>
@@ -3620,6 +3622,8 @@
     <ClInclude Include="..\..\Source\Definitions\Command\CommandSelection.h"/>
     <ClInclude Include="..\..\Source\Definitions\Command\CommandSelectionManager.h"/>
     <ClInclude Include="..\..\Source\Definitions\Command\CommandTiming.h"/>
+    <ClInclude Include="..\..\Source\Definitions\Command\CommandTimingFiltered.h"/>
+    <ClInclude Include="..\..\Source\Definitions\Command\CommandTimingFilteredManager.h"/>
     <ClInclude Include="..\..\Source\Definitions\Command\CommandValue.h"/>
     <ClInclude Include="..\..\Source\Definitions\Command\CommandValueManager.h"/>
     <ClInclude Include="..\..\Source\Definitions\Command\MoveInBlackManager.h"/>

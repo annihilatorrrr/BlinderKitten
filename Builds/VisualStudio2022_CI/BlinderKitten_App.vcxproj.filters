@@ -1504,6 +1504,12 @@
     <ClCompile Include="..\..\Source\Definitions\Command\CommandTiming.cpp">
       <Filter>BlinderKitten\Source\Definitions\Command</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Definitions\Command\CommandTimingFiltered.cpp">
+      <Filter>BlinderKitten\Source\Definitions\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Definitions\Command\CommandTimingFilteredManager.cpp">
+      <Filter>BlinderKitten\Source\Definitions\Command</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Definitions\Command\CommandValue.cpp">
       <Filter>BlinderKitten\Source\Definitions\Command</Filter>
     </ClCompile>
@@ -5413,6 +5419,12 @@
       <Filter>BlinderKitten\Source\Definitions\Command</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Definitions\Command\CommandTiming.h">
+      <Filter>BlinderKitten\Source\Definitions\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Definitions\Command\CommandTimingFiltered.h">
+      <Filter>BlinderKitten\Source\Definitions\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Definitions\Command\CommandTimingFilteredManager.h">
       <Filter>BlinderKitten\Source\Definitions\Command</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Definitions\Command\CommandValue.h">

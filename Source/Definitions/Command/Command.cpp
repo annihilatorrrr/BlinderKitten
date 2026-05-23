@@ -26,6 +26,32 @@
 #include "Definitions/Fixture/Fixture.h"
 #include "Definitions/Group/Group.h"
 
+struct CommandTimingParameters {
+	bool delayThru = false;
+	bool delaySym = false;
+	float delayFrom = 0;
+	float delayTo = 0;
+	bool delayRandom = false;
+
+	bool fadeThru = false;
+	bool fadeSym = false;
+	float fadeFrom = 0;
+	float fadeTo = 0;
+	bool fadeRandom = false;
+
+	Automation* fadeCurve = nullptr;
+	Automation* fadeRepartCurve = nullptr;
+	Automation* delayRepartCurve = nullptr;
+
+	float delayHTPIn = -1;
+	float delayHTPOut = -1;
+	float delayLTP = -1;
+	float fadeHTPIn = -1;
+	float fadeHTPOut = -1;
+	float fadeLTP = -1;
+};
+
+
 Command::Command(var params) :
 	BaseItem(params.getProperty("name", "Command")),
 	objectType(params.getProperty("type", "Command").toString()),
@@ -153,39 +179,19 @@ void Command::computeValues(Cuelist* callingCuelist, Cue* callingCue, Programmer
 	if (moveInBlackDelay->floatValue() >= 0) mibDelay = moveInBlackDelay->floatValue();
 
 	bool pathMode = useValuesAsPath->boolValue();
-
-	bool delayThru = false;
-	bool delaySym = false;
-	float delayFrom = 0;
-	float delayTo = 0;
-	bool delayRandom = false;
-
-	bool fadeThru = false;
-	bool fadeSym = false;
-	float fadeFrom = 0;
-	float fadeTo = 0;
-	bool fadeRandom = false;
-
-	Automation* fadeCurve = nullptr;
-	Automation* fadeRepartCurve = nullptr;
-	Automation* delayRepartCurve = nullptr;
-
 	String timingMode = "";
 
-	float delayHTPIn = -1;
-	float delayHTPOut = -1;
-	float delayLTP = -1;
-	float fadeHTPIn = -1;
-	float fadeHTPOut = -1;
-	float fadeLTP = -1;
+	HashMap<ChannelType*, CommandTimingParameters> channelTypeToTiming;
+	HashMap<ChannelFamily*, CommandTimingParameters> channelFamilyToTiming;
+	CommandTimingParameters defaultTiming;
 
 	if (callingCue != nullptr) {
-		delayHTPIn = callingCue->htpInDelay->floatValue() >= 0 ? callingCue->htpInDelay->floatValue() : -1;
-		delayHTPOut = callingCue->htpOutDelay->floatValue() >= 0 ? callingCue->htpOutDelay->floatValue() : delayHTPIn;
-		delayLTP = callingCue->ltpDelay->floatValue() >= 0 ? callingCue->ltpDelay->floatValue() : delayHTPIn;
-		fadeHTPIn = callingCue->htpInFade->floatValue() >= 0 ? callingCue->htpInFade->floatValue() : -1;
-		fadeHTPOut = callingCue->htpOutFade->floatValue() >= 0 ? callingCue->htpOutFade->floatValue() : fadeHTPIn;
-		fadeLTP = callingCue->ltpFade->floatValue() >= 0 ? callingCue->ltpFade->floatValue() : fadeHTPIn;
+		defaultTiming.delayHTPIn = callingCue->htpInDelay->floatValue() >= 0 ? callingCue->htpInDelay->floatValue() : -1;
+		defaultTiming.delayHTPOut = callingCue->htpOutDelay->floatValue() >= 0 ? callingCue->htpOutDelay->floatValue() : defaultTiming.delayHTPIn;
+		defaultTiming.delayLTP = callingCue->ltpDelay->floatValue() >= 0 ? callingCue->ltpDelay->floatValue() : defaultTiming.delayHTPIn;
+		defaultTiming.fadeHTPIn = callingCue->htpInFade->floatValue() >= 0 ? callingCue->htpInFade->floatValue() : -1;
+		defaultTiming.fadeHTPOut = callingCue->htpOutFade->floatValue() >= 0 ? callingCue->htpOutFade->floatValue() : defaultTiming.fadeHTPIn;
+		defaultTiming.fadeLTP = callingCue->ltpFade->floatValue() >= 0 ? callingCue->ltpFade->floatValue() : defaultTiming.fadeHTPIn;
 	}
 
 	if (callingCuelist != nullptr) {
@@ -195,37 +201,67 @@ void Command::computeValues(Cuelist* callingCuelist, Cue* callingCue, Programmer
 			if (tp != nullptr) {
 				float delayMult = tp->delayMult.getValue();
 				float fadeMult = tp->fadeMult.getValue();
-				delayThru = tp->thruDelay->getValue();
-				delaySym = tp->symmetryDelay->getValue();
-				delayFrom = (float)tp->delayFrom->getValue() * 1000 * delayMult;
-				delayTo = (float)tp->delayTo->getValue() * 1000 * delayMult;
-				fadeThru = tp->thruFade->getValue();
-				fadeSym = tp->symmetryFade->getValue();
-				fadeFrom = (float)tp->fadeFrom->getValue() * 1000 * fadeMult;
-				fadeTo = (float)tp->fadeTo->getValue() * 1000 * fadeMult;
-				fadeCurve = &tp->curveFade;
-				fadeRepartCurve = &tp->curveFadeRepart;
-				delayRepartCurve = &tp->curveDelayRepart;
-				delayRandom = delayThru && tp->randomizeDelay->boolValue();
-				fadeRandom = fadeThru && tp->randomizeFade->boolValue();
+				defaultTiming.delayThru = tp->thruDelay->getValue();
+				defaultTiming.delaySym = tp->symmetryDelay->getValue();
+				defaultTiming.delayFrom = (float)tp->delayFrom->getValue() * 1000 * delayMult;
+				defaultTiming.delayTo = (float)tp->delayTo->getValue() * 1000 * delayMult;
+				defaultTiming.fadeThru = tp->thruFade->getValue();
+				defaultTiming.fadeSym = tp->symmetryFade->getValue();
+				defaultTiming.fadeFrom = (float)tp->fadeFrom->getValue() * 1000 * fadeMult;
+				defaultTiming.fadeTo = (float)tp->fadeTo->getValue() * 1000 * fadeMult;
+				defaultTiming.fadeCurve = &tp->curveFade;
+				defaultTiming.fadeRepartCurve = &tp->curveFadeRepart;
+				defaultTiming.delayRepartCurve = &tp->curveDelayRepart;
+				defaultTiming.delayRandom = defaultTiming.delayThru && tp->randomizeDelay->boolValue();
+				defaultTiming.fadeRandom = defaultTiming.fadeThru && tp->randomizeFade->boolValue();
 			}
 		}
 		else if (timingMode == "raw") {
 			float delayMult = callingCuelist->timing.delayMult.getValue();
 			float fadeMult = callingCuelist->timing.fadeMult.getValue();
-			delayThru = callingCuelist->timing.thruDelay->getValue();
-			delaySym = callingCuelist->timing.symmetryDelay->getValue();
-			delayFrom = (float)callingCuelist->timing.delayFrom->getValue() * 1000 * delayMult;
-			delayTo = (float)callingCuelist->timing.delayTo->getValue() * 1000 * delayMult;
-			fadeThru = callingCuelist->timing.thruFade->getValue();
-			fadeSym = callingCuelist->timing.symmetryFade->getValue();
-			fadeFrom = (float)callingCuelist->timing.fadeFrom->getValue() * 1000 * fadeMult;
-			fadeTo = (float)callingCuelist->timing.fadeTo->getValue() * 1000 * fadeMult;
-			fadeCurve = &callingCuelist->timing.curveFade;
-			fadeRepartCurve = &callingCuelist->timing.curveFadeRepart;
-			delayRepartCurve = &callingCuelist->timing.curveDelayRepart;
-			delayRandom = delayThru && callingCuelist->timing.randomizeDelay->boolValue();
-			fadeRandom = fadeThru && callingCuelist->timing.randomizeFade->boolValue();
+			defaultTiming.delayThru = callingCuelist->timing.thruDelay->getValue();
+			defaultTiming.delaySym = callingCuelist->timing.symmetryDelay->getValue();
+			defaultTiming.delayFrom = (float)callingCuelist->timing.delayFrom->getValue() * 1000 * delayMult;
+			defaultTiming.delayTo = (float)callingCuelist->timing.delayTo->getValue() * 1000 * delayMult;
+			defaultTiming.fadeThru = callingCuelist->timing.thruFade->getValue();
+			defaultTiming.fadeSym = callingCuelist->timing.symmetryFade->getValue();
+			defaultTiming.fadeFrom = (float)callingCuelist->timing.fadeFrom->getValue() * 1000 * fadeMult;
+			defaultTiming.fadeTo = (float)callingCuelist->timing.fadeTo->getValue() * 1000 * fadeMult;
+			defaultTiming.fadeCurve = &callingCuelist->timing.curveFade;
+			defaultTiming.fadeRepartCurve = &callingCuelist->timing.curveFadeRepart;
+			defaultTiming.delayRepartCurve = &callingCuelist->timing.curveDelayRepart;
+			defaultTiming.delayRandom = defaultTiming.delayThru && callingCuelist->timing.randomizeDelay->boolValue();
+			defaultTiming.fadeRandom = defaultTiming.fadeThru && callingCuelist->timing.randomizeFade->boolValue();
+		}
+		else if (timingMode == "filtered") {
+			for (CommandTimingFiltered* t : callingCuelist->timing.filteredManager.items) {
+				CommandTimingParameters* params = &defaultTiming;
+				ChannelType* ct = dynamic_cast<ChannelType*>(t->filter->targetContainer.get());
+				ChannelFamily* cf = dynamic_cast<ChannelFamily*>(t->filter->targetContainer.get());
+				if (ct != nullptr) {
+					channelTypeToTiming.set(ct, CommandTimingParameters());
+					params = &channelTypeToTiming.getReference(ct);
+				}
+				else if (cf != nullptr) {
+					channelFamilyToTiming.set(cf, CommandTimingParameters());
+					params = &channelFamilyToTiming.getReference(cf);
+				}
+				float delayMult = t->delayMult.getValue();
+				float fadeMult = t->fadeMult.getValue();
+				defaultTiming.delayThru = t->thruDelay->getValue();
+				defaultTiming.delaySym = t->symmetryDelay->getValue();
+				defaultTiming.delayFrom = (float)t->delayFrom->getValue() * 1000 * delayMult;
+				defaultTiming.delayTo = (float)t->delayTo->getValue() * 1000 * delayMult;
+				defaultTiming.fadeThru = t->thruFade->getValue();
+				defaultTiming.fadeSym = t->symmetryFade->getValue();
+				defaultTiming.fadeFrom = (float)t->fadeFrom->getValue() * 1000 * fadeMult;
+				defaultTiming.fadeTo = (float)t->fadeTo->getValue() * 1000 * fadeMult;
+				defaultTiming.fadeCurve = &t->curveFade;
+				defaultTiming.fadeRepartCurve = &t->curveFadeRepart;
+				defaultTiming.delayRepartCurve = &t->curveDelayRepart;
+				defaultTiming.delayRandom = defaultTiming.delayThru && t->randomizeDelay->boolValue();
+				defaultTiming.fadeRandom = defaultTiming.fadeThru && t->randomizeFade->boolValue();
+			}
 		}
 	}
 
@@ -236,37 +272,67 @@ void Command::computeValues(Cuelist* callingCuelist, Cue* callingCue, Programmer
 			if (tp != nullptr) {
 				float delayMult = tp->delayMult.getValue();
 				float fadeMult = tp->fadeMult.getValue();
-				delayThru = tp->thruDelay->getValue();
-				delaySym = tp->symmetryDelay->getValue();
-				delayFrom = (float)tp->delayFrom->getValue() * 1000 * delayMult;
-				delayTo = (float)tp->delayTo->getValue() * 1000 * delayMult;
-				fadeThru = tp->thruFade->getValue();
-				fadeSym = tp->symmetryFade->getValue();
-				fadeFrom = (float)tp->fadeFrom->getValue() * 1000 * fadeMult;
-				fadeTo = (float)tp->fadeTo->getValue() * 1000 * fadeMult;
-				fadeCurve = &tp->curveFade;
-				fadeRepartCurve = &tp->curveFadeRepart;
-				delayRepartCurve = &tp->curveDelayRepart;
-				delayRandom = delayThru && tp->randomizeDelay->boolValue();
-				fadeRandom = fadeThru && tp->randomizeFade->boolValue();
+				defaultTiming.delayThru = tp->thruDelay->getValue();
+				defaultTiming.delaySym = tp->symmetryDelay->getValue();
+				defaultTiming.delayFrom = (float)tp->delayFrom->getValue() * 1000 * delayMult;
+				defaultTiming.delayTo = (float)tp->delayTo->getValue() * 1000 * delayMult;
+				defaultTiming.fadeThru = tp->thruFade->getValue();
+				defaultTiming.fadeSym = tp->symmetryFade->getValue();
+				defaultTiming.fadeFrom = (float)tp->fadeFrom->getValue() * 1000 * fadeMult;
+				defaultTiming.fadeTo = (float)tp->fadeTo->getValue() * 1000 * fadeMult;
+				defaultTiming.fadeCurve = &tp->curveFade;
+				defaultTiming.fadeRepartCurve = &tp->curveFadeRepart;
+				defaultTiming.delayRepartCurve = &tp->curveDelayRepart;
+				defaultTiming.delayRandom = defaultTiming.delayThru && tp->randomizeDelay->boolValue();
+				defaultTiming.fadeRandom = defaultTiming.fadeThru && tp->randomizeFade->boolValue();
 			}
 		}
 		else if (timingMode == "raw") {
 			float delayMult = callingProgrammer->timing.delayMult.getValue();
 			float fadeMult = callingProgrammer->timing.fadeMult.getValue();
-			delayThru = callingProgrammer->timing.thruDelay->getValue();
-			delaySym = callingProgrammer->timing.symmetryDelay->getValue();
-			delayFrom = (float)callingProgrammer->timing.delayFrom->getValue() * 1000 * delayMult;
-			delayTo = (float)callingProgrammer->timing.delayTo->getValue() * 1000 * delayMult;
-			fadeThru = callingProgrammer->timing.thruFade->getValue();
-			fadeSym = callingProgrammer->timing.symmetryFade->getValue();
-			fadeFrom = (float)callingProgrammer->timing.fadeFrom->getValue() * 1000 * fadeMult;
-			fadeTo = (float)callingProgrammer->timing.fadeTo->getValue() * 1000 * fadeMult;
-			fadeCurve = &callingProgrammer->timing.curveFade;
-			fadeRepartCurve = &callingProgrammer->timing.curveFadeRepart;
-			delayRepartCurve = &callingProgrammer->timing.curveDelayRepart;
-			delayRandom = delayThru && callingProgrammer->timing.randomizeDelay->boolValue();
-			fadeRandom = fadeThru && callingProgrammer->timing.randomizeFade->boolValue();
+			defaultTiming.delayThru = callingProgrammer->timing.thruDelay->getValue();
+			defaultTiming.delaySym = callingProgrammer->timing.symmetryDelay->getValue();
+			defaultTiming.delayFrom = (float)callingProgrammer->timing.delayFrom->getValue() * 1000 * delayMult;
+			defaultTiming.delayTo = (float)callingProgrammer->timing.delayTo->getValue() * 1000 * delayMult;
+			defaultTiming.fadeThru = callingProgrammer->timing.thruFade->getValue();
+			defaultTiming.fadeSym = callingProgrammer->timing.symmetryFade->getValue();
+			defaultTiming.fadeFrom = (float)callingProgrammer->timing.fadeFrom->getValue() * 1000 * fadeMult;
+			defaultTiming.fadeTo = (float)callingProgrammer->timing.fadeTo->getValue() * 1000 * fadeMult;
+			defaultTiming.fadeCurve = &callingProgrammer->timing.curveFade;
+			defaultTiming.fadeRepartCurve = &callingProgrammer->timing.curveFadeRepart;
+			defaultTiming.delayRepartCurve = &callingProgrammer->timing.curveDelayRepart;
+			defaultTiming.delayRandom = defaultTiming.delayThru && callingProgrammer->timing.randomizeDelay->boolValue();
+			defaultTiming.fadeRandom = defaultTiming.fadeThru && callingProgrammer->timing.randomizeFade->boolValue();
+		}
+		else if (timingMode == "filtered") {
+			for (CommandTimingFiltered* t : callingProgrammer->timing.filteredManager.items) {
+				CommandTimingParameters* params = &defaultTiming;
+				ChannelType* ct = dynamic_cast<ChannelType*>(t->filter->targetContainer.get());
+				ChannelFamily* cf = dynamic_cast<ChannelFamily*>(t->filter->targetContainer.get());
+				if (ct != nullptr) {
+					channelTypeToTiming.set(ct, CommandTimingParameters());
+					params = &channelTypeToTiming.getReference(ct);
+				}
+				else if (cf != nullptr) {
+					channelFamilyToTiming.set(cf, CommandTimingParameters());
+					params = &channelFamilyToTiming.getReference(cf);
+				}
+				float delayMult = t->delayMult.getValue();
+				float fadeMult = t->fadeMult.getValue();
+				defaultTiming.delayThru = t->thruDelay->getValue();
+				defaultTiming.delaySym = t->symmetryDelay->getValue();
+				defaultTiming.delayFrom = (float)t->delayFrom->getValue() * 1000 * delayMult;
+				defaultTiming.delayTo = (float)t->delayTo->getValue() * 1000 * delayMult;
+				defaultTiming.fadeThru = t->thruFade->getValue();
+				defaultTiming.fadeSym = t->symmetryFade->getValue();
+				defaultTiming.fadeFrom = (float)t->fadeFrom->getValue() * 1000 * fadeMult;
+				defaultTiming.fadeTo = (float)t->fadeTo->getValue() * 1000 * fadeMult;
+				defaultTiming.fadeCurve = &t->curveFade;
+				defaultTiming.fadeRepartCurve = &t->curveFadeRepart;
+				defaultTiming.delayRepartCurve = &t->curveDelayRepart;
+				defaultTiming.delayRandom = defaultTiming.delayThru && t->randomizeDelay->boolValue();
+				defaultTiming.fadeRandom = defaultTiming.fadeThru && t->randomizeFade->boolValue();
+			}
 		}
 	}
 
@@ -277,38 +343,69 @@ void Command::computeValues(Cuelist* callingCuelist, Cue* callingCue, Programmer
 		if (tp != nullptr) {
 			float delayMult = tp->delayMult.getValue();
 			float fadeMult = tp->fadeMult.getValue();
-			delayThru = tp->thruDelay->getValue();
-			delaySym = tp->symmetryDelay->getValue();
-			delayFrom = (float)tp->delayFrom->getValue() * 1000 * delayMult;
-			delayTo = (float)tp->delayTo->getValue() * 1000 * delayMult;
-			fadeThru = tp->thruFade->getValue();
-			fadeSym = tp->symmetryFade->getValue();
-			fadeFrom = (float)tp->fadeFrom->getValue() * 1000 * fadeMult;
-			fadeTo = (float)tp->fadeTo->getValue() * 1000 * fadeMult;
-			fadeCurve = &tp->curveFade;
-			fadeRepartCurve = &tp->curveFadeRepart;
-			delayRepartCurve = &tp->curveDelayRepart;
-			delayRandom = delayThru && tp->randomizeDelay->boolValue();
-			fadeRandom = fadeThru && tp->randomizeFade->boolValue();
+			defaultTiming.delayThru = tp->thruDelay->getValue();
+			defaultTiming.delaySym = tp->symmetryDelay->getValue();
+			defaultTiming.delayFrom = (float)tp->delayFrom->getValue() * 1000 * delayMult;
+			defaultTiming.delayTo = (float)tp->delayTo->getValue() * 1000 * delayMult;
+			defaultTiming.fadeThru = tp->thruFade->getValue();
+			defaultTiming.fadeSym = tp->symmetryFade->getValue();
+			defaultTiming.fadeFrom = (float)tp->fadeFrom->getValue() * 1000 * fadeMult;
+			defaultTiming.fadeTo = (float)tp->fadeTo->getValue() * 1000 * fadeMult;
+			defaultTiming.fadeCurve = &tp->curveFade;
+			defaultTiming.fadeRepartCurve = &tp->curveFadeRepart;
+			defaultTiming.delayRepartCurve = &tp->curveDelayRepart;
+			defaultTiming.delayRandom = defaultTiming.delayThru && tp->randomizeDelay->boolValue();
+			defaultTiming.fadeRandom = defaultTiming.fadeThru && tp->randomizeFade->boolValue();
 		}
 	}
 	else if (timingMode == "raw"){
 		float delayMult = timing.delayMult.getValue();
 		float fadeMult = timing.fadeMult.getValue();
-		delayThru = timing.thruDelay->getValue();
-		delaySym = timing.symmetryDelay->getValue();
-		delayFrom = (float)timing.delayFrom->getValue() * 1000 * delayMult;
-		delayTo = (float)timing.delayTo->getValue() * 1000 * delayMult;
-		fadeThru = timing.thruFade->getValue();
-		fadeSym = timing.symmetryFade->getValue();
-		fadeFrom = (float)timing.fadeFrom->getValue() * 1000 * fadeMult;
-		fadeTo = (float)timing.fadeTo->getValue() * 1000 * fadeMult;
-		fadeCurve = &timing.curveFade;
-		fadeRepartCurve = &timing.curveFadeRepart;
-		delayRepartCurve = &timing.curveDelayRepart;
-		delayRandom = delayThru && timing.randomizeDelay->boolValue();
-		fadeRandom = fadeThru && timing.randomizeFade->boolValue();
+		defaultTiming.delayThru = timing.thruDelay->getValue();
+		defaultTiming.delaySym = timing.symmetryDelay->getValue();
+		defaultTiming.delayFrom = (float)timing.delayFrom->getValue() * 1000 * delayMult;
+		defaultTiming.delayTo = (float)timing.delayTo->getValue() * 1000 * delayMult;
+		defaultTiming.fadeThru = timing.thruFade->getValue();
+		defaultTiming.fadeSym = timing.symmetryFade->getValue();
+		defaultTiming.fadeFrom = (float)timing.fadeFrom->getValue() * 1000 * fadeMult;
+		defaultTiming.fadeTo = (float)timing.fadeTo->getValue() * 1000 * fadeMult;
+		defaultTiming.fadeCurve = &timing.curveFade;
+		defaultTiming.fadeRepartCurve = &timing.curveFadeRepart;
+		defaultTiming.delayRepartCurve = &timing.curveDelayRepart;
+		defaultTiming.delayRandom = defaultTiming.delayThru && timing.randomizeDelay->boolValue();
+		defaultTiming.fadeRandom = defaultTiming.fadeThru && timing.randomizeFade->boolValue();
 	}
+	else if (timingMode == "filtered") {
+		for (CommandTimingFiltered* t : timing.filteredManager.items) {
+			CommandTimingParameters* params = &defaultTiming;
+			ChannelType* ct = dynamic_cast<ChannelType*>(t->filter->targetContainer.get());
+			ChannelFamily* cf = dynamic_cast<ChannelFamily*>(t->filter->targetContainer.get());
+			if (ct != nullptr) {
+				channelTypeToTiming.set(ct, CommandTimingParameters());
+				params = &channelTypeToTiming.getReference(ct);
+			}
+			else if (cf != nullptr) {
+				channelFamilyToTiming.set(cf, CommandTimingParameters());
+				params = &channelFamilyToTiming.getReference(cf);
+			}
+			float delayMult = t->delayMult.getValue();
+			float fadeMult = t->fadeMult.getValue();
+			params->delayThru = t->thruDelay->getValue();
+			params->delaySym = t->symmetryDelay->getValue();
+			params->delayFrom = (float)t->delayFrom->getValue() * 1000 * delayMult;
+			params->delayTo = (float)t->delayTo->getValue() * 1000 * delayMult;
+			params->fadeThru = t->thruFade->getValue();
+			params->fadeSym = t->symmetryFade->getValue();
+			params->fadeFrom = (float)t->fadeFrom->getValue() * 1000 * fadeMult;
+			params->fadeTo = (float)t->fadeTo->getValue() * 1000 * fadeMult;
+			params->fadeCurve = &t->curveFade;
+			params->fadeRepartCurve = &t->curveFadeRepart;
+			params->delayRepartCurve = &t->curveDelayRepart;
+			params->delayRandom = params->delayThru && t->randomizeDelay->boolValue();
+			params->fadeRandom = params->fadeThru && t->randomizeFade->boolValue();
+		}
+	}
+
 	for (int commandIndex = 0; commandIndex < commandValues.size(); commandIndex++) {
 		CommandValue* cv = commandValues[commandIndex];
 		if (cv->enabled->boolValue()) {
@@ -387,12 +484,12 @@ void Command::computeValues(Cuelist* callingCuelist, Cue* callingCue, Programmer
 				}
 
 				for (auto it = valuesFrom->begin(); it != valuesFrom->end(); it.next()) {
-					SubFixtureChannel* fchan = sf->channelsMap.contains(it.getKey()) ? sf->channelsMap.getReference(it.getKey()) : nullptr;
-
+					ChannelType* ct = it.getKey();
 					float valueFrom = it.getValue();
+					SubFixtureChannel* fchan = sf->channelsMap.contains(ct) ? sf->channelsMap.getReference(ct) : nullptr;
 					float valueTo = valueFrom;
-					if (valuesTo->contains(it.getKey())) {
-						valueTo = valuesTo->getReference(it.getKey());
+					if (valuesTo->contains(ct)) {
+						valueTo = valuesTo->getReference(ct);
 					}
 
 					if (fchan != nullptr) {
@@ -423,20 +520,30 @@ void Command::computeValues(Cuelist* callingCuelist, Cue* callingCue, Programmer
 							finalValue->values.set(1, val);
 						}
 
-						float delay = delayFrom;
-						if (delayThru && subFixtures.size() > 1) {
+						CommandTimingParameters* timingParameters = &defaultTiming;
+						if (channelTypeToTiming.contains(ct)) {
+							timingParameters = &channelTypeToTiming.getReference(ct);
+						}
+						else {
+							ChannelFamily* cf = dynamic_cast<ChannelFamily*>(ct->parentContainer->parentContainer.get());
+							if (channelFamilyToTiming.contains(cf)) {
+								timingParameters = &channelFamilyToTiming.getReference(cf);
+							}
+						}
+
+						float delay = timingParameters->delayFrom;
+						if (timingParameters->delayThru && subFixtures.size() > 1) {
 							float position = normalizedPosition;
-							if (delaySym) { position = useNormalized ? normalizedPositionSym : Brain::symPosition(indexFixt, subFixtures.size()); }
-							position = timing.curveDelayRepart.getValueAtPosition(position);
-							position = delayRepartCurve->getValueAtPosition(position);
-							if (delayRandom) {
+							if (timingParameters->delaySym) { position = useNormalized ? normalizedPositionSym : Brain::symPosition(indexFixt, subFixtures.size()); }
+							position = timingParameters->delayRepartCurve->getValueAtPosition(position);
+							if (timingParameters->delayRandom) {
 								position = Brain::getInstance()->mainRandom.nextFloat();
 							}
-							delay = jmap(position, delayFrom, delayTo);
+							delay = jmap(position, timingParameters->delayFrom, timingParameters->delayTo);
 						}
 						if (timingMode == "cue" && callingCuelist != nullptr) {
 							if (!fchan->isHTP) {
-								if (delayLTP != -1) delay = delayLTP*1000. ;
+								if (timingParameters->delayLTP != -1) delay = timingParameters->delayLTP*1000. ;
 							}
 							else {
 								std::shared_ptr<ChannelValue> currentCuelistVal = nullptr;
@@ -444,49 +551,49 @@ void Command::computeValues(Cuelist* callingCuelist, Cue* callingCue, Programmer
 									currentCuelistVal = callingCuelist->activeValues.getReference(fchan);
 								}
 								if (currentCuelistVal == nullptr || currentCuelistVal->endValue() < val) {
-									if (delayHTPIn != -1) delay = delayHTPIn * 1000.;
+									if (timingParameters->delayHTPIn != -1) delay = timingParameters->delayHTPIn * 1000.;
 								}
 								else {
-									if (delayHTPOut != -1) delay = delayHTPOut * 1000.;
+									if (timingParameters->delayHTPOut != -1) delay = timingParameters->delayHTPOut * 1000.;
 								}
 							}
 						}
 						finalValue->delay = delay;
 
-						float fade = fadeFrom;
-						finalValue->fadeCurve = fadeCurve;
+						float fade = timingParameters->fadeFrom;
+						finalValue->fadeCurve = timingParameters->fadeCurve;
 						if (fchan->snapOnly) {
 							fade = 0;
 						}
 						else {
-							if (fadeThru && subFixtures.size() > 1) {
+							if (timingParameters->fadeThru && subFixtures.size() > 1) {
 								float position = normalizedPosition;
-								if (fadeSym) { position = useNormalized ? normalizedPositionSym : Brain::symPosition(indexFixt, subFixtures.size()); }
+								if (timingParameters->fadeSym) { position = useNormalized ? normalizedPositionSym : Brain::symPosition(indexFixt, subFixtures.size()); }
 								position = timing.curveFadeRepart.getValueAtPosition(position);
-								position = fadeRepartCurve->getValueAtPosition(position);
-								if (fadeRandom) {
+								position = timingParameters->fadeRepartCurve->getValueAtPosition(position);
+								if (timingParameters->fadeRandom) {
 									position = Brain::getInstance()->mainRandom.nextFloat();
 								}
-								fade = jmap(position, fadeFrom, fadeTo);
+								fade = jmap(position, timingParameters->fadeFrom, timingParameters->fadeTo);
 							}
 							if (timingMode == "cue" && callingCuelist != nullptr) {
 								if (!fchan->isHTP) {
-									if (fadeLTP != -1 ) {
-										fade = fadeLTP * 1000.;
+									if (timingParameters->fadeLTP != -1 ) {
+										fade = timingParameters->fadeLTP * 1000.;
 										finalValue->fadeCurve = nullptr;
 										}
 								}
 								else {
 									std::shared_ptr<ChannelValue> currentCuelistVal = callingCuelist->activeValues.contains(fchan) ? callingCuelist->activeValues.getReference(fchan) : nullptr;
 									if (currentCuelistVal == nullptr || currentCuelistVal->endValue() < val) {
-										if (fadeHTPIn != -1) {
-											fade = fadeHTPIn * 1000.;
+										if (timingParameters->fadeHTPIn != -1) {
+											fade = timingParameters->fadeHTPIn * 1000.;
 											finalValue->fadeCurve = nullptr;
 										}
 									}
 									else {
-										if (fadeHTPOut != -1) {
-											fade = fadeHTPOut * 1000.;
+										if (timingParameters->fadeHTPOut != -1) {
+											fade = timingParameters->fadeHTPOut * 1000.;
 											finalValue->fadeCurve = nullptr;
 										}
 									}

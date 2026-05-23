@@ -11,22 +11,19 @@
 #pragma once
 #include "JuceHeader.h"
 #include "Definitions/Multiplicator/MultiplicatorLinkManager.h"
-#include "Definitions/Command/CommandTimingFilteredManager.h"
 
-class CommandTiming :
-    public ControllableContainer
+class CommandTimingFiltered :
+    public BaseItem
 {
 public:
-    CommandTiming(var params = var());
-    virtual ~CommandTiming();
+    CommandTimingFiltered(var params = var());
+    virtual ~CommandTimingFiltered();
 
     String objectType;
     var objectData;
 
     // TargetParameter* timePreset;
-
-    EnumParameter* presetOrValue;
-    IntParameter* presetId;
+    TargetParameter* filter;
 
     FloatParameter* fadeFrom;
     FloatParameter* delayFrom;
@@ -44,8 +41,6 @@ public:
     Automation curveDelayRepart;
     Automation curveFadeRepart;
 
-    CommandTimingFilteredManager filteredManager;
-
     MultiplicatorLinkManager delayMult;
     MultiplicatorLinkManager fadeMult;
 
@@ -54,5 +49,5 @@ public:
     void afterLoadJSONDataInternal();
     void updateDisplay();
 
-    static CommandTiming* create(var params) { return new CommandTiming(params); }
+    static CommandTimingFiltered* create(var params) { return new CommandTimingFiltered(params); }
 };

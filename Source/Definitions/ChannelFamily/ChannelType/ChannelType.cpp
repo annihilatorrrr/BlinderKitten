@@ -15,6 +15,7 @@ ChannelType::ChannelType(var params) :
     objectType(params.getProperty("type", "ChannelType").toString()),
     objectData(params)
 {
+    itemDataType = "ChannelType";
     priority = addEnumParameter("Channel mode", "Type of channel", true);
     priority -> addOption("Latest Takes Precedence", "LTP");
     priority->addOption("Highest Takes Precedence", "HTP");

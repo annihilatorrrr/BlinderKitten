@@ -155,6 +155,8 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/CommandSelection_bd00793d.o \
   $(JUCE_OBJDIR)/CommandSelectionManager_ad998c3a.o \
   $(JUCE_OBJDIR)/CommandTiming_d4942483.o \
+  $(JUCE_OBJDIR)/CommandTimingFiltered_7172c13a.o \
+  $(JUCE_OBJDIR)/CommandTimingFilteredManager_91e2bd9d.o \
   $(JUCE_OBJDIR)/CommandValue_d798fca2.o \
   $(JUCE_OBJDIR)/CommandValueManager_2dce5d35.o \
   $(JUCE_OBJDIR)/MoveInBlackManager_55053620.o \
@@ -693,6 +695,16 @@ $(JUCE_OBJDIR)/CommandSelectionManager_ad998c3a.o: ../../Source/Definitions/Comm
 $(JUCE_OBJDIR)/CommandTiming_d4942483.o: ../../Source/Definitions/Command/CommandTiming.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling CommandTiming.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/CommandTimingFiltered_7172c13a.o: ../../Source/Definitions/Command/CommandTimingFiltered.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling CommandTimingFiltered.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/CommandTimingFilteredManager_91e2bd9d.o: ../../Source/Definitions/Command/CommandTimingFilteredManager.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling CommandTimingFilteredManager.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/CommandValue_d798fca2.o: ../../Source/Definitions/Command/CommandValue.cpp
