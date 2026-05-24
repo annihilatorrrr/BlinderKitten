@@ -423,12 +423,12 @@ void Programmer::updateName() {
 
 void Programmer::clearAll() {
 	release();
-	computing.enter();
+	//computing.enter();
 	currentUserCommand = nullptr;
 	commands.clear();
 	//commands.items.clear();
 	currentUserCommand = nullptr;
-	computing.exit();
+	//computing.exit();
 	Brain::getInstance()->pleaseUpdate(this);
 	UserInputManager::getInstance()->commandValueChanged(currentUserCommand);
 	UserInputManager::getInstance()->commandSelectionChanged(currentUserCommand);
@@ -446,7 +446,7 @@ void Programmer::clearCurrent() {
 		return;
 	}
 
-	computing.enter();
+	//computing.enter();
 
 	if (commands.items.size() > 0 && currentUserCommand != nullptr) {
 		commands.removeItem(currentUserCommand, false, true);
@@ -459,7 +459,7 @@ void Programmer::clearCurrent() {
 	else {
 		currentUserCommand = commands.items.getLast();
 	}
-	computing.exit();
+	//computing.exit();
 	Brain::getInstance()->pleaseUpdate(this);
 	UserInputManager::getInstance()->commandValueChanged(currentUserCommand);
 	UserInputManager::getInstance()->commandSelectionChanged(currentUserCommand);

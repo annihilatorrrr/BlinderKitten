@@ -98,13 +98,6 @@ Command::~Command()
 {
 	toDelete = true;
 	Brain::getInstance()->allCommands.removeAllInstancesOf(this);
-	computedValues.getLock().enter();
-	for (auto it = computedValues.begin(); it != computedValues.end(); it.next()) {
-		//delete it.getValue();
-	}
-	//computedValues.clear();
-	computedValues.getLock().exit();
-
 	if (UserInputManager::getInstance()->targetCommand == this) {
 		UserInputManager::getInstance()->targetCommand = nullptr;
 	}
