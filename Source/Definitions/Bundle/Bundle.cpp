@@ -22,6 +22,7 @@
 #include "Definitions/Mapper/Mapper.h"
 #include "Definitions/Tracker/Tracker.h"
 #include "Definitions/Stamp/Stamp.h"
+#include "BKEngine.h"
 
 Bundle::Bundle(var params) :
 	BaseItem(params.getProperty("name", "Bundle")),
@@ -174,6 +175,27 @@ void Bundle::tapTempo()
 	for (Effect* c : computedEffects) c->tapTempo();
 	for (Carousel* c : computedCarousels) c->tapTempo();
 	isComputing.exit();
+
+	double now = Time::getMillisecondCounterHiRes();
+	double delta = now - lastTapTempo;
+	lastTapTempo = now;
+	if (delta < 3000) {
+		BKEngine* e = dynamic_cast<BKEngine*>(BKEngine::mainEngine);
+		int historySize = e->tapTempoHistory->intValue();
+		tapTempoHistory.add(delta);
+		while (tapTempoHistory.size() > historySize) tapTempoHistory.remove(0);
+		delta = 0;
+		for (int i = 0; i < tapTempoHistory.size(); i++) delta += tapTempoHistory[i];
+		delta = delta / tapTempoHistory.size();
+		double cpm = 60000. / delta;
+		lastSpeed = cpm;
+	}
+	else {
+		tapTempoHistory.clear();
+	}
+
+	Brain::getInstance()->virtualFadersNeedUpdate = true;
+
 }
 
 void Bundle::setSize(float val, bool size, bool HTP, bool LTP, bool flash)

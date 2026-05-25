@@ -41,6 +41,9 @@ public:
     Array<Mapper*> computedMappers;
     Array<Tracker*> computedTrackers;
 
+    double lastTapTempo;
+    Array<double> tapTempoHistory;
+
     CriticalSection isComputing;
 
     float lastHTP = 0;
