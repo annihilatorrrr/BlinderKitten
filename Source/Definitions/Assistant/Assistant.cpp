@@ -364,6 +364,7 @@ void Assistant::createPalette()
     bool valid = false;
 
     LOG("Start creating palette, please wait...");
+    const MessageManagerLock mmLock;
     for (int i = presetFrom; i != presetTo + delta; i += delta) {
         if (Brain::getInstance()->getPresetById(i) != nullptr) {
             valid = true;
@@ -404,7 +405,6 @@ void Assistant::createPalette()
 
     bool nextIsNewLine = false;
     for (int i = presetFrom; i != presetTo + delta; i += delta) {
-        const MessageManagerLock mmLock;
         Preset* p = Brain::getInstance()->getPresetById(i);
         if (p != nullptr) {
             String name = p->userName->getValue().toString();
