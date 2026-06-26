@@ -34,7 +34,12 @@ EffectAction::EffectAction(var params) :
     }
 
     if (actionType == FX_SET_SEEK || actionType == FX_ADD_SEEK) {
-        seekValue = addFloatParameter("Seek", "Desired seek value or seek delta",0);
+        seekValue = addFloatParameter("Seek", "Desired seek value or seek delta", 0);
+    }
+
+    if (actionType == FX_SEEK) {
+        seekFrom = addFloatParameter("Seek From", "Desired seek value when fader is down", 0,0);
+        seekTo = addFloatParameter("Seek To", "Desired seek value when fader is up", 1,0);
     }
 
     if (actionType == FX_START || actionType == FX_STOP) {
@@ -189,6 +194,13 @@ void EffectAction::setValueInternal(var value, String origin, int incrementIndex
         if (val == 1) {
             double v = target->totalElapsed + seekValue->floatValue();
             v = jmax(0., v);
+            target->totalElapsed = v;
+        }
+        break;
+
+    case FX_SEEK:
+        {
+            double v = jmap(val,0.f,1.f,seekFrom->floatValue(), seekTo->floatValue());
             target->totalElapsed = v;
         }
         break;

@@ -34,6 +34,10 @@ CarouselAction::CarouselAction(var params) :
     if (actionType == CAR_SET_SEEK || actionType == CAR_ADD_SEEK) {
         seekValue = addFloatParameter("Seek", "Desired seek value or seek delta", 0);
     }
+    if (actionType == CAR_SEEK ) {
+        seekFrom = addFloatParameter("Seek From", "Desired seek value when fader is down", 0, 0);
+        seekTo = addFloatParameter("Seek To", "Desired seek value when fader is up", 1, 0);
+    }
 
     if (actionType == CAR_START || actionType == CAR_STOP) {
         forcedFade = addFloatParameter("Force fade", "Force a fade time", 0, 0);
@@ -183,6 +187,13 @@ void CarouselAction::setValueInternal(var value, String origin, int incrementInd
             double v = target->totalElapsed + seekValue->floatValue();
             v = jmax(0., v);
             target->totalElapsed += seekValue->floatValue();
+        }
+        break;
+
+    case CAR_SEEK:
+        {
+            double v = jmap(val, 0.f, 1.f, seekFrom->floatValue(), seekTo->floatValue());
+            target->totalElapsed = v;
         }
         break;
 

@@ -92,6 +92,7 @@ ActionFactory::ActionFactory()
     defs.add(Factory<Action>::Definition::createDef("Effect", "Effect Buddy Block Wing", &EffectAction::create)->addParam("actionType", EffectAction::FX_BBW));
     defs.add(Factory<Action>::Definition::createDef("Effect", "Effect Set Seek", &EffectAction::create)->addParam("actionType", EffectAction::FX_SET_SEEK));
     defs.add(Factory<Action>::Definition::createDef("Effect", "Effect Add Seek", &EffectAction::create)->addParam("actionType", EffectAction::FX_ADD_SEEK));
+    defs.add(Factory<Action>::Definition::createDef("Effect", "Effect Seek", &EffectAction::create)->addParam("actionType", EffectAction::FX_SEEK));
 
     defs.add(Factory<Action>::Definition::createDef("Carousel", "Carousel Start", &CarouselAction::create)->addParam("actionType", CarouselAction::CAR_START));
     defs.add(Factory<Action>::Definition::createDef("Carousel", "Carousel Stop", &CarouselAction::create)->addParam("actionType", CarouselAction::CAR_STOP));
@@ -106,6 +107,7 @@ ActionFactory::ActionFactory()
     defs.add(Factory<Action>::Definition::createDef("Carousel", "Carousel Buddy Block Wing", &CarouselAction::create)->addParam("actionType", CarouselAction::CAR_BBW));
     defs.add(Factory<Action>::Definition::createDef("Carousel", "Carousel Set Seek", &CarouselAction::create)->addParam("actionType", CarouselAction::CAR_SET_SEEK));
     defs.add(Factory<Action>::Definition::createDef("Carousel", "Carousel Add Seek", &CarouselAction::create)->addParam("actionType", CarouselAction::CAR_ADD_SEEK));
+    defs.add(Factory<Action>::Definition::createDef("Carousel", "Carousel Seek", &CarouselAction::create)->addParam("actionType", CarouselAction::CAR_SEEK));
 
     defs.add(Factory<Action>::Definition::createDef("Mapper", "Mapper Start", &MapperAction::create)->addParam("actionType", MapperAction::TRK_START));
     defs.add(Factory<Action>::Definition::createDef("Mapper", "Mapper Stop", &MapperAction::create)->addParam("actionType", MapperAction::TRK_STOP));
