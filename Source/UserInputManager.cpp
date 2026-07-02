@@ -685,7 +685,10 @@ void UserInputManager::commandValueChanged(Command* c) {
 }
 
 void UserInputManager::encoderValueChanged(int index, float newValue, String origin) {
-	const MessageManagerLock mmLock;
+	if (!MessageManager::getInstance()->isThisTheMessageThread()) {
+		MessageManager::getInstance()->callAsync([this, index, newValue, origin](){encoderValueChanged(index, newValue, origin);});
+		return;
+	}
 	if (Encoders::getInstance()->channels.size() <= index) { return; }
 	int mode = Encoders::getInstance()->mode;
 	
@@ -721,7 +724,10 @@ void UserInputManager::encoderValueChanged(int index, float newValue, String ori
 
 void UserInputManager::changeChannelValue(ChannelType* c, float newValue)
 {
-	MessageManagerLock mmlock;
+	if (!MessageManager::getInstance()->isThisTheMessageThread()) {
+		MessageManager::callAsync([this, c, newValue](){changeChannelValue(c, newValue);});
+		return;
+	}
 	targetCommand = getProgrammer(true)->currentUserCommand;
 	if (targetCommand == nullptr) {
 		return;

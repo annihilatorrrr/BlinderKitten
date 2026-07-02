@@ -1069,7 +1069,10 @@ float Command::getChannelValue(ChannelType* t, bool thru) {
 
 void Command::explodeSelection(bool takeOutputValue)
 {
-	const MessageManagerLock mmLock;
+	if (!MessageManager::getInstance()->isThisTheMessageThread()) {
+		MessageManager::callAsync([this, takeOutputValue](){explodeSelection(takeOutputValue);});
+		return;
+	}
 	BaseManager<Command>* parentManager = dynamic_cast<BaseManager<Command>*>(parentContainer.get());
 	int index = parentManager->items.indexOf(this)+1;
 	computeValues();
@@ -1079,20 +1082,23 @@ void Command::explodeSelection(bool takeOutputValue)
 	for (int i = 0; i < selection.computedSelectedSubFixtures.size(); i++) {
 		SubFixture* sf = selection.computedSelectedSubFixtures[i];
 		Fixture* f = sf->parentFixture;
-		Command* newCommand = parentManager->addItem();
-		newCommand->values.clear();
-		parentManager->setItemIndex(newCommand, index);
-		index++;
-		newCommand->selection.items[0]->valueFrom->setValue(f->id->getValue());
-		if (f->subFixtures.size() > 1) {
-			newCommand->selection.items[0]->subSel->setValue(true);
-			newCommand->selection.items[0]->subFrom->setValue(sf->subId);
-		}
+		Command* newCommand = nullptr;
 		for (int idCh = 0; idCh < ChannelFamilyManager::getInstance()->orderedElements.size(); idCh++) {
 			ChannelType* chanType = ChannelFamilyManager::getInstance()->orderedElements[idCh];
 			if (sf->channelsMap.contains(chanType)) {
 				SubFixtureChannel* chan = sf->channelsMap.getReference(chanType);
 				if (chan != nullptr && computedValues.contains(chan)) {
+					if (newCommand == nullptr) {
+						newCommand = parentManager->addItem();
+						newCommand->values.clear();
+						parentManager->setItemIndex(newCommand, index);
+						index++;
+						newCommand->selection.items[0]->valueFrom->setValue(f->id->getValue());
+						if (f->subFixtures.size() > 1) {
+							newCommand->selection.items[0]->subSel->setValue(true);
+							newCommand->selection.items[0]->subFrom->setValue(sf->subId);
+						}
+					}
 					CommandValue* cv = newCommand->values.addItem();
 					cv->channelType->setValueFromTarget(chan->channelType);
 					std::shared_ptr<ChannelValue> chanVal = computedValues.contains(chan) ? computedValues.getReference(chan) : nullptr;

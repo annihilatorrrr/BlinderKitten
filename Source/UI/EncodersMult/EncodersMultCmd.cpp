@@ -57,7 +57,10 @@ void EncodersMultCmd::resetCommand(Command* c)
 
 void EncodersMultCmd::commandContentChanged()
 {
-    const MessageManagerLock mmLock;
+    if (!MessageManager::getInstance()->isThisTheMessageThread()) {
+        MessageManager::callAsync([this](){commandContentChanged();});
+        return;
+    }
     channels.clear();
     for (int i = encoders.size(); i >= 0; i--) {
         encoders.remove(i); // maybe kill some things ?
