@@ -483,7 +483,10 @@ void CommandSelectionManager::computeSelection(Array<int> groupHistory) {
 			}
 
 			if (selections[selId]->plusOrMinus->getValue() == "add") {
-				computedSelectedSubFixtures.addArray(tempSelection);
+				for (SubFixture* sf : tempSelection) {
+					computedSelectedSubFixtures.removeAllInstancesOf(sf);
+					computedSelectedSubFixtures.add(sf);
+				}
 			}
 			else if (selections[selId]->plusOrMinus->getValue() == "remove") {
 				computedSelectedSubFixtures.removeValuesIn(tempSelection);
