@@ -428,9 +428,6 @@ void Encoders::updateEncoders() {
                     encoders[i]->setValue(vMod, juce::dontSendNotification);
                     encodersParam[i]->setValue(v);
                 }
-                else {
-                    UserInputManager::getInstance()->feedback("/encoder/" + String(i + 1), 0, "");
-                }
             }
         }
         else {
@@ -567,6 +564,10 @@ void Encoders::updateEncodersValues() {
                         else if (encoderRange == 2) { vMod *= 255; }
                         encoders[ci]->setValue(vMod, juce::dontSendNotification);
                         encodersParam[ci] -> setValue(value);
+                        UserInputManager::getInstance()->feedback("/encoder/" + String(ci + 1), value, "");
+                    }
+                    else {
+                        UserInputManager::getInstance()->feedback("/encoder/" + String(ci + 1), 0, "");
                     }
                 }
                 //encoders[ci]->setColour(Slider::rotarySliderFillColourId, Colour(255, 0, 0));
