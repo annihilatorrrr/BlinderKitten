@@ -33,6 +33,7 @@
 #include "Definitions/Effect/Effect.h"
 #include "Definitions/Carousel/Carousel.h"
 #include "BKEngine.h"
+#include "Definitions/Actions/InputPanelAction.h"
 
 juce_ImplementSingleton(Assistant)
 
@@ -71,6 +72,7 @@ Assistant::Assistant() :
 	paletteFirstPresetId = paletteMakerCC.addIntParameter("First Preset ID", "", 1,0);
 	paletteLastPresetId = paletteMakerCC.addIntParameter("Last Preset ID", "", 0,0);
 	paletteTimingPresetId = paletteMakerCC.addIntParameter("Timing Preset ID", "0 means none", 0,0);
+    paletteUseAnotherId = paletteMakerCC.addIntParameter("Use another ID", "The palette will fill this preset's another id with the one selected", 0, 0);
     paletteCuelistId = paletteMakerCC.addIntParameter("Palette ID", "Id for your palette, if already taken, search for a number above. Leave at 0 for auto number.", 0,0);
     paletteName = paletteMakerCC.addStringParameter("Palette Name", "Name your palette here, leave empty to have an auto name", "");
     paletteKeepEmpty = paletteMakerCC.addBoolParameter("Keep unused presets", "If checked, all presets will have a cue, even if the preset has no target in the group", false);
@@ -355,7 +357,9 @@ void Assistant::createPalette()
     int presetFrom = paletteFirstPresetId->getValue();
     int presetTo = paletteLastPresetId->getValue();
     int timePreset = paletteTimingPresetId->getValue();
-    if (groupId == 0) { LOGERROR("you must type a valid group id";); return; }
+    int useAnotherId = paletteUseAnotherId->intValue();
+
+    if (groupId == 0 && useAnotherId == 0) { LOGERROR("you must type a valid group id or a use another preset";); return; }
     if (presetFrom == 0) { LOGERROR("you must type a valid first preset id";); return; }
     if (presetTo == 0) { LOGERROR("you must type a valid lat preset id";); return; }
     if (presetFrom == presetTo) { LOGERROR("you must specify different preset ids";); return; }
@@ -377,9 +381,14 @@ void Assistant::createPalette()
 
     String cuelistName = "Palette Group " + String(groupId);
     Group* g = Brain::getInstance()->getGroupById(groupId);
-    if (g != nullptr) {
-        cuelistName = "Palette " + g->userName->getValue().toString();
+    Preset* uap = Brain::getInstance()->getPresetById(useAnotherId);
+    if (uap != nullptr) {
+        cuelistName = "Palette " + uap->userName->stringValue();
     }
+    if (g != nullptr) {
+        cuelistName = "Palette " + g->userName->stringValue();
+    }
+
     Cuelist* cl = CuelistManager::getInstance()->addItem();
     int askedId = paletteCuelistId->intValue();
     if (askedId > cl->id->intValue()) {
@@ -417,17 +426,30 @@ void Assistant::createPalette()
             c->loadWindowBreakLine->setValue(nextIsNewLine);
             nextIsNewLine = false;
             c->id->setValue(i);
-            c->commands.items[0]->selection.items[0]->targetType->setValueWithKey("Group");
-            c->commands.items[0]->selection.items[0]->valueFrom->setValue(groupId);
-            c->commands.items[0]->values.items[0]->presetOrValue->setValueWithKey("Preset");
-            c->commands.items[0]->values.items[0]->presetIdFrom->setValue(i);
-            //if (timePreset != 0) {
-            //    c->commands.items[0]->timing.presetOrValue->setValueWithKey("Preset");
-            //    c->commands.items[0]->timing.presetId->setValue(timePreset);
-            //}
+            if (g != nullptr) {
+                c->commands.items[0]->selection.items[0]->targetType->setValueWithKey("Group");
+                c->commands.items[0]->selection.items[0]->valueFrom->setValue(groupId);
+                c->commands.items[0]->values.items[0]->presetOrValue->setValueWithKey("Preset");
+                c->commands.items[0]->values.items[0]->presetIdFrom->setValue(i);
+            }
+            else {
+                c->commands.clear();
+            }
+
+            if (uap != nullptr) {
+                Task* t = c->tasks.addItem();
+                t->targetType->setValue("Generic actions");
+                juce::var params(new juce::DynamicObject());
+                params.getDynamicObject()->setProperty("actionType",InputPanelAction::ActionType::IP_USEANOTHER);
+                InputPanelAction* a = new InputPanelAction(params);
+                a->useAnotherTargetType->setValue("Preset");
+                a->useAnotherTargetId->setValue(useAnotherId);
+                a->useAnotherOtherId->setValue(p->id->intValue());
+                t->actionManager.addItem(a);
+            }
 
             bool log = true;
-            if (!paletteKeepEmpty->boolValue()) {
+            if (!paletteKeepEmpty->boolValue() && g != nullptr ) {
                 c->computeValues();
                 if (c->computedValues.size() == 0) {
                     log = false;

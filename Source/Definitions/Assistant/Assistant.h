@@ -37,6 +37,7 @@ public:
 
 	ControllableContainer paletteMakerCC;
 	IntParameter* paletteGroupId;
+	IntParameter* paletteUseAnotherId;
 	IntParameter* paletteFirstPresetId;
 	IntParameter* paletteLastPresetId;
 	IntParameter* paletteTimingPresetId;
