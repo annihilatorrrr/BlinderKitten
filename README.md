@@ -9,7 +9,7 @@ All informations about the software are here : [Blinderkitten.lighting](http://b
 
 Please check the [online documentation](https://norbertrostaing.gitbook.io/blinderkitten/).
 
-You can also join the [discord server](https://discord.gg/4RKYHQDn) to ask questions and report bugs.
+You can also join the [discord server](https://discord.gg/tzxp9f3Dsc) to ask questions and report bugs.
 
 
 ## How does it work ?
