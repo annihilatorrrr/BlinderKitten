@@ -47,6 +47,8 @@ DMXInterface::DMXInterface() :
 	
 	thruManager.reset(new ControllableContainer("Pass-through"));
 	thruManager->userCanAddControllables = true;
+	thruManager->allowSameChildrenNiceNames = false;
+
 	thruManager->customUserCreateControllableFunc = &DMXInterface::createThruControllable;
 	addChildControllableContainer(thruManager.get());
 
@@ -318,7 +320,7 @@ DMXInterface::DMXParams::DMXParams() :
 
 void DMXInterface::createThruControllable(ControllableContainer* cc)
 {
-	TargetParameter* p = new TargetParameter("Output Universe", "Target module to send the raw data to", "");
+	TargetParameter* p = new TargetParameter("Output", "Target module to send the raw data to", "");
 	//p->setRootContainer(InterfaceManager::getInstance());
 	p->targetType = TargetParameter::CONTAINER;
 	p->maxDefaultSearchLevel = 0;
@@ -327,6 +329,7 @@ void DMXInterface::createThruControllable(ControllableContainer* cc)
 	p->canBeDisabledByUser = true;
 	p->saveValueOnly = false;
 	cc->addParameter(p);
+	p->setNiceName("Ouput Universe");
 }
 
 void DMXInterface::afterLoadJSONDataInternal()
