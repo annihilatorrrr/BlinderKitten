@@ -759,14 +759,13 @@ void UserInputManager::changeChannelValue(ChannelType* c, float newValue)
 	if (t == nullptr && newValue == -2) {
 		return;
 	}
+	bool isNewValue = (t == nullptr);
 	if (t == nullptr) {
 		if (empty != nullptr) {
 			t = empty;
-			t->channelType->setValueFromTarget(c);
 		}
 		else {
 			t = targetCommand->values.addItem();
-			t->channelType->setValueFromTarget(c);
 		}
 	}
 
@@ -779,7 +778,13 @@ void UserInputManager::changeChannelValue(ChannelType* c, float newValue)
 			//t->valueFrom->setValue(newValue, false);
 		}
 		else {
-			t->valueFrom->setValue(newValue, false);
+			if (isNewValue) {
+				t->valueFrom->setValue(newValue, true);
+				t->channelType->setValueFromTarget(c);
+			}
+			else {
+				t->valueFrom->setValue(newValue, false);
+			}
 		}
 	}
 	else {
@@ -790,7 +795,13 @@ void UserInputManager::changeChannelValue(ChannelType* c, float newValue)
 			if (!t->thru->getValue()) {
 				t->thru->setValue(true);
 			}
-			t->valueTo->setValue(newValue, false);
+			if (isNewValue) {
+				t->valueTo->setValue(newValue, true);
+				t->channelType->setValueFromTarget(c);
+			}
+			else {
+				t->valueTo->setValue(newValue, false);
+			}
 		}
 
 	}
