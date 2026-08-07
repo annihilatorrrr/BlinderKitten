@@ -990,11 +990,11 @@ void Cuelist::goBack(float forcedDelay, float forcedFade)
 }
 
 void Cuelist::flash(bool setOn, bool withTiming, bool swop) {
-	ScopedLock lock(CScuesAB);
 	if (setOn) {
 		TSOffFlash = 0;
 		TSOffFlashEnd = 0;
 		isFlashing = true;
+		CScuesAB.enter();
 		if (cueA == nullptr) {
 			if (withTiming) {
 				go();
@@ -1014,6 +1014,7 @@ void Cuelist::flash(bool setOn, bool withTiming, bool swop) {
 			}
 			cueA->csComputing.exit();
 		}
+		CScuesAB.exit();
 	}
 	else {
 		isFlashing = false;
@@ -1023,6 +1024,7 @@ void Cuelist::flash(bool setOn, bool withTiming, bool swop) {
 			isSwopping = false;
 			Brain::getInstance()->unswoppedCuelist(this);
 		}
+		CScuesAB.enter();
 		if (cueA != nullptr) {
 			cueA->csComputing.enter();
 			for (auto it = cueA->computedValues.begin(); it != cueA->computedValues.end(); it.next()) {
@@ -1030,6 +1032,7 @@ void Cuelist::flash(bool setOn, bool withTiming, bool swop) {
 			}
 			cueA->csComputing.exit();
 		}
+		CScuesAB.exit();
 		if (!userPressedGo) {
 			if (withTiming) {
 				off();
