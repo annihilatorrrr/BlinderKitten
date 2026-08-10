@@ -1039,7 +1039,7 @@ void BKEngine::importGDTF(File f)
 
 	InputStream* stream = archive->createStreamForEntry(descIndex);
 	importGDTFContent(stream, "");
-	stream->~InputStream();
+	delete stream;
 }
 
 FixtureType* BKEngine::importGDTF(InputStream* stream, String modeName)
@@ -1063,8 +1063,11 @@ FixtureType* BKEngine::importGDTFContent(InputStream* stream, String importModeN
 	changedNames.set("ColorAdd_B", "Blue");
 	changedNames.set("ColorAdd_W", "White");
 	changedNames.set("ColorAdd_A", "Amber");
-    changedNames.set("ColorAdd_RY", "Amber");
-    changedNames.set("ColorAdd_UV", "UV");
+	changedNames.set("ColorRGB_Red", "Red");
+	changedNames.set("ColorRGB_Green", "Green");
+	changedNames.set("ColorRGB_Blue", "Blue");
+	changedNames.set("ColorAdd_RY", "Amber");
+	changedNames.set("ColorAdd_UV", "UV");
 	changedNames.set("ColorSub_C", "Cyan");
 	changedNames.set("ColorSub_M", "Magenta");
 	changedNames.set("ColorSub_Y", "Yellow");
@@ -1121,9 +1124,12 @@ FixtureType* BKEngine::importGDTFContent(InputStream* stream, String importModeN
 					}
 					if (ct == nullptr) {
 						ct = cf->definitions.addItem();
-						nameToChannelType.set(attrName, ct);
 						ct->setNiceName(attrName);
 					}
+
+					// FIX : même si le ChannelType existait déjà avec une casse différente,
+					// il faut l'ajouter à la map avec le nom GDTF.
+					nameToChannelType.set(attrName, ct);
 				}
 			}
 
@@ -1175,6 +1181,11 @@ FixtureType* BKEngine::importGDTFContent(InputStream* stream, String importModeN
 							String attribute = "###dummy###";
 							if (logicalChannelNode != nullptr) {
 								attribute = logicalChannelNode->getStringAttribute("Attribute");
+
+								// FIX : certains GDTF ont un LogicalChannel avec Attribute="".
+								// Il faut quand même conserver le canal DMX.
+								if (attribute == "") { attribute = "###dummy###"; }
+
 								if (logicalChannelNode->getNumChildElements() == 1) {
 									auto chanFunctionTag = logicalChannelNode->getFirstChildElement();
 									if (chanFunctionTag->hasTagName("ChannelFunction")) {
@@ -1195,6 +1206,24 @@ FixtureType* BKEngine::importGDTFContent(InputStream* stream, String importModeN
 								dmxAdress = DMXOffset.getIntValue();
 								resolution = 1;
 							}
+
+							// fallback for badly defined pixel GDTFs
+							if (attribute == "NoFeature") {
+								String geometryLower = geometry.toLowerCase();
+
+								if (geometryLower.contains("rgbw")) {
+									if (dmxAdress == 1) { attribute = "Red"; }
+									else if (dmxAdress == 2) { attribute = "Green"; }
+									else if (dmxAdress == 3) { attribute = "Blue"; }
+									else if (dmxAdress == 4) { attribute = "White"; }
+								}
+								else if (geometryLower.contains("rgb")) {
+									if (dmxAdress == 1) { attribute = "Red"; }
+									else if (dmxAdress == 2) { attribute = "Green"; }
+									else if (dmxAdress == 3) { attribute = "Blue"; }
+								}
+							}
+
 							Array<geometryBreaks> breaks;
 
 							getBreakOffset(modeGeometry, geometry, dmxBreak, &breaks);
@@ -1254,7 +1283,7 @@ FixtureType* BKEngine::importGDTFContent(InputStream* stream, String importModeN
 								}
 								if (getMasterDimmer.contains(tempChannels[i].initialFunction)) {
 									if (!subIdToVirtDimmer.contains(tempChannels[i].subFixtId)) {
-										FixtureTypeVirtualChannel* virtDim = ft->virtualChansManager.addItem(nullptr, var(),false, false);
+										FixtureTypeVirtualChannel* virtDim = ft->virtualChansManager.addItem(nullptr, var(), false, false);
 										subIdToVirtDimmer.set(tempChannels[i].subFixtId, virtDim);
 										virtDim->channelType->setValueFromTarget(nameToChannelType.getReference("Intensity"));
 										virtDim->subFixtureId->setValue(tempChannels[i].subFixtId);
@@ -1274,14 +1303,10 @@ FixtureType* BKEngine::importGDTFContent(InputStream* stream, String importModeN
 	return ret;
 }
 
+
 void BKEngine::getBreakOffset(XmlElement* tag, String geometryName, int dmxBreak, Array<geometryBreaks>* breaks)
 {
-	if (tag->getTagName() == "Geometry") { 
-		for (int i = 0; i < tag->getNumChildElements(); i++) {
-			getBreakOffset(tag->getChildElement(i), geometryName, dmxBreak, breaks);
-		}
-	}
-	else if (tag->getTagName() == "GeometryReference" && tag->getStringAttribute("Geometry") == geometryName) {
+	if (tag->getTagName() == "GeometryReference" && tag->getStringAttribute("Geometry") == geometryName) {
 		for (int i = 0; i < tag->getNumChildElements(); i++) {
 			auto br = tag->getChildElement(i);
 			if (br->getTagName() == "Break" && dmxBreak == br->getStringAttribute("DMXBreak").getIntValue()) {
@@ -1291,6 +1316,11 @@ void BKEngine::getBreakOffset(XmlElement* tag, String geometryName, int dmxBreak
 				breaks->add(temp);
 			}
 		}
+	}
+
+	// FIX : il faut parcourir les enfants de Geometry, Axis, Beam, etc.
+	for (int i = 0; i < tag->getNumChildElements(); i++) {
+		getBreakOffset(tag->getChildElement(i), geometryName, dmxBreak, breaks);
 	}
 }
 
@@ -1438,11 +1468,16 @@ void BKEngine::importFixtureFromMVR(XmlElement* child, std::shared_ptr<ZipFile> 
 		String ftName = spec + " - " + mode;
 		FixtureType* ft = nullptr;
 		if (!fixtureTypesMap.contains(ftName)) {
-			int gdtfIndex = archive->getIndexOfFileName(spec);
+			String gdtfFileName = spec;
+			if (!gdtfFileName.endsWithIgnoreCase(".gdtf")) {
+				gdtfFileName += ".gdtf";
+			}
+
+			int gdtfIndex = archive->getIndexOfFileName(gdtfFileName);
 			if (gdtfIndex != -1) {
 				InputStream* s = archive->createStreamForEntry(gdtfIndex);
 				ft = importGDTF(s, mode);
-				s->~InputStream();
+				delete s;
 
 			}
 			if (ft == nullptr) {
