@@ -1054,6 +1054,86 @@ FixtureType* BKEngine::importGDTF(InputStream* stream, String modeName)
 	return importGDTFContent(archive->createStreamForEntry(descIndex), modeName);
 }
 
+static bool geometryHasDMXChannels(XmlElement* geometryNode, XmlElement* modeChannels)
+{
+	if (geometryNode == nullptr || modeChannels == nullptr) { return false; }
+
+	String geometryName;
+
+	if (geometryNode->getTagName() == "GeometryReference") {
+		geometryName = geometryNode->getStringAttribute("Geometry");
+	}
+	else {
+		geometryName = geometryNode->getStringAttribute("Name");
+	}
+
+	if (geometryName == "") { return false; }
+
+	for (int i = 0; i < modeChannels->getNumChildElements(); i++) {
+		auto dmxChannelNode = modeChannels->getChildElement(i);
+		if (dmxChannelNode->getStringAttribute("Geometry") == geometryName) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+static bool geometryBranchHasDMXChannels(XmlElement* geometryNode, XmlElement* modeChannels)
+{
+	if (geometryHasDMXChannels(geometryNode, modeChannels)) { return true; }
+
+	for (int i = 0; i < geometryNode->getNumChildElements(); i++) {
+		auto child = geometryNode->getChildElement(i);
+
+		if (child->getTagName() != "Break" && geometryBranchHasDMXChannels(child, modeChannels)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+static void buildSubFixtureIds(XmlElement* geometryNode, XmlElement* modeChannels, HashMap<String, int>* geometrySubFixtureIds, HashMap<String, int>* referenceSubFixtureIds, int* nextSubFixtureId, int currentSubFixtureId = 0)
+{
+	bool hasChannels = geometryHasDMXChannels(geometryNode, modeChannels);
+
+	if (hasChannels) {
+		if (currentSubFixtureId == 0) {
+			currentSubFixtureId = *nextSubFixtureId;
+			(*nextSubFixtureId)++;
+		}
+
+		if (geometryNode->getTagName() == "GeometryReference") {
+			referenceSubFixtureIds->set(geometryNode->getStringAttribute("Name"), currentSubFixtureId);
+		}
+		else {
+			geometrySubFixtureIds->set(geometryNode->getStringAttribute("Name"), currentSubFixtureId);
+		}
+	}
+
+	Array<XmlElement*> controlledChildren;
+
+	for (int i = 0; i < geometryNode->getNumChildElements(); i++) {
+		auto child = geometryNode->getChildElement(i);
+
+		if (child->getTagName() != "Break" && geometryBranchHasDMXChannels(child, modeChannels)) {
+			controlledChildren.add(child);
+		}
+	}
+
+	if (controlledChildren.size() == 1) {
+		buildSubFixtureIds(controlledChildren[0], modeChannels, geometrySubFixtureIds, referenceSubFixtureIds, nextSubFixtureId, currentSubFixtureId);
+	}
+	else if (controlledChildren.size() > 1) {
+		for (int i = 0; i < controlledChildren.size(); i++) {
+			buildSubFixtureIds(controlledChildren[i], modeChannels, geometrySubFixtureIds, referenceSubFixtureIds, nextSubFixtureId, 0);
+		}
+	}
+}
+
 FixtureType* BKEngine::importGDTFContent(InputStream* stream, String importModeName)
 {
 	HashMap<String, String> changedNames;
@@ -1162,9 +1242,18 @@ FixtureType* BKEngine::importGDTFContent(InputStream* stream, String importModeN
 							getMasterDimmer.add(modeRelations->getChildElement(iRel)->getStringAttribute("Follower"));
 						}
 					}
+
 					XmlElement* modeGeometry = mainGeometries.getReference(modeNode->getStringAttribute("Geometry"));
-					Array<String> subFixtureNames;
 					auto modeChannels = modeNode->getChildByName("DMXChannels");
+
+					HashMap<String, int> geometrySubFixtureIds;
+					HashMap<String, int> referenceSubFixtureIds;
+					int nextSubFixtureId = 1;
+
+					if (modeGeometry != nullptr && modeChannels != nullptr) {
+						buildSubFixtureIds(modeGeometry, modeChannels, &geometrySubFixtureIds, &referenceSubFixtureIds, &nextSubFixtureId);
+					}
+
 					if (modeChannels != nullptr) {
 						for (int iChan = 0; iChan < modeChannels->getNumChildElements(); iChan++) {
 							auto dmxChannelNode = modeChannels->getChildElement(iChan);
@@ -1182,18 +1271,23 @@ FixtureType* BKEngine::importGDTFContent(InputStream* stream, String importModeN
 							if (logicalChannelNode != nullptr) {
 								attribute = logicalChannelNode->getStringAttribute("Attribute");
 
-								// FIX : certains GDTF ont un LogicalChannel avec Attribute="".
-								// Il faut quand même conserver le canal DMX.
-								if (attribute == "") { attribute = "###dummy###"; }
-
 								if (logicalChannelNode->getNumChildElements() == 1) {
 									auto chanFunctionTag = logicalChannelNode->getFirstChildElement();
 									if (chanFunctionTag->hasTagName("ChannelFunction")) {
 										physicalFrom = chanFunctionTag->getStringAttribute("PhysicalFrom").getFloatValue();
 										physicalTo = chanFunctionTag->getStringAttribute("PhysicalTo").getFloatValue();
+
+										// FIX : certains GDTF ont un LogicalChannel avec Attribute=""
+										// mais l'attribut est présent sur le ChannelFunction.
+										if (attribute == "") {
+											attribute = chanFunctionTag->getStringAttribute("Attribute");
+										}
 									}
-								}
+								}	
 							}
+
+								// FIX : conserver quand même le canal si aucun attribut n'est défini.
+							if (attribute == "") { attribute = "###dummy###"; }
 
 							if (DMXOffset == "") {
 								// virtual
@@ -1230,11 +1324,16 @@ FixtureType* BKEngine::importGDTFContent(InputStream* stream, String importModeN
 							if (dmxAdress > 0) {
 								if (breaks.size() > 0) {
 									for (int i = 0; i < breaks.size(); i++) {
-										subFixtureNames.addIfNotAlreadyThere(breaks[i].name);
 										tempChannel tc;
 										tc.attribute = attribute;
 										tc.resolution = resolution;
-										tc.subFixtId = subFixtureNames.indexOf(breaks[i].name) + 1;
+
+										if (!referenceSubFixtureIds.contains(breaks[i].name)) {
+											referenceSubFixtureIds.set(breaks[i].name, nextSubFixtureId);
+											nextSubFixtureId++;
+										}
+										tc.subFixtId = referenceSubFixtureIds.getReference(breaks[i].name);
+
 										tc.initialFunction = initialFunction;
 										tc.physicalFrom = physicalFrom;
 										tc.physicalTo = physicalTo;
@@ -1252,8 +1351,13 @@ FixtureType* BKEngine::importGDTFContent(InputStream* stream, String importModeN
 									tc.initialFunction = initialFunction;
 									tc.physicalFrom = physicalFrom;
 									tc.physicalTo = physicalTo;
-									if (subFixtureNames.indexOf(geometry) == -1) { subFixtureNames.add(geometry); }
-									tc.subFixtId = subFixtureNames.indexOf(geometry) + 1;
+
+									if (!geometrySubFixtureIds.contains(geometry)) {
+										geometrySubFixtureIds.set(geometry, nextSubFixtureId);
+										nextSubFixtureId++;
+									}
+									tc.subFixtId = geometrySubFixtureIds.getReference(geometry);
+
 									int index = dmxAdress - 1;
 									while (tempChannels.size() < index) { tempChannels.add(tempChannel()); }
 									tempChannels.set(index, tc);
