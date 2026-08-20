@@ -713,6 +713,11 @@ void UserInputManager::encoderValueChanged(int index, float newValue, String ori
 				Encoders::getInstance()->lastOrigin.set(c, origin);
 				UserInputManager::getInstance()->feedback("/encoder/" + String(index + 1), newValue, "");
 				changeChannelValue(c, newValue);
+				if (newValue <= -1) {
+					Encoders::getInstance()->updateChannels();
+					Encoders::getInstance()->updateEncoders();
+					Encoders::getInstance()->updateEncodersValues();
+				}
 				Brain::getInstance()->virtualFadersNeedUpdate = true;
 			}
 		}

@@ -83,7 +83,7 @@ void EncoderAction::setValueInternal(var value, String origin, int incrementInde
     case ENC_RESET:
         index = targetEncoder->intValue() - 1;
         if (index >= 0 && index < Encoders::getInstance()->encoders.size()) {
-            UserInputManager::getInstance()->encoderValueChanged(index, -2, origin);
+            UserInputManager::getInstance()->encoderValueChanged(index, -2, "");
         }
         break;
 
