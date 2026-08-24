@@ -46,6 +46,20 @@ BundleAction::BundleAction(var params) :
         forcedFade->canBeDisabledByUser = true;
     }
 
+    if (actionType == BUN_FADE) {
+        inFade = addBoolParameter("In fade", "For effects and carousels only", true);
+        outFade = addBoolParameter("Out fade", "For cuelists, effects and carousels", true);
+
+        fadeDurationFrom = addFloatParameter("Fade duration from", "", 0, 0);
+        fadeDurationTo = addFloatParameter("Fade duration to", "", 0, 0);
+    }
+
+    if (actionType == BUN_FADE_FIXED) {
+        inFade = addBoolParameter("In fade", "For effects and carousels only", true);
+        outFade = addBoolParameter("Out fade", "For cuelists, effects and carousels", true);
+
+        fadeDurationFixed = addFloatParameter("Fade duration", "", 0, 0);
+    }
 
 }
 
@@ -151,6 +165,19 @@ void BundleAction::setValueInternal(var value, String origin, int indexIncrement
     case BUN_TIMED_SWOP:
         target->flash(val == 1, true, true);
         break;
+    
+    case BUN_FADE:
+        {
+        float fade = jmap(val, 0.f, 1.f, fadeDurationFrom->floatValue(), fadeDurationTo->floatValue());
+        if (inFade->boolValue()) target->setFadeIn(fade);
+        if (outFade->boolValue()) target->setFadeOut(fade);
+        break;
+        }
+
+    case BUN_FADE_FIXED:
+        if (inFade->boolValue()) target->setFadeIn(fadeDurationFixed->floatValue());
+        if (outFade->boolValue()) target->setFadeOut(fadeDurationFixed->floatValue());
+        break;        
 
     }
 
@@ -190,6 +217,17 @@ var BundleAction::getValue()
 
     case BUN_HALFSPEED:
         break;
+
+    case BUN_FADE: 
+        {
+        float v = 0;
+        int n = 0;
+        if (inFade->boolValue()) { n++; v += target->lastInFade; }
+        if (outFade->boolValue()) { n++; v += target->lastOutFade; }
+        if (n>0) v /= (float)n;
+        val = jmap(v, fadeDurationFrom->floatValue(), fadeDurationTo->floatValue(), 0.f, 1.f);
+        }
+
     }
 
     return val;

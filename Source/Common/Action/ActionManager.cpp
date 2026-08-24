@@ -78,6 +78,10 @@ ActionFactory::ActionFactory()
     defs.add(Factory<Action>::Definition::createDef("Cuelist", "Take selection", &CuelistAction::create)->addParam("actionType", CuelistAction::CL_TAKESELECTION));
     defs.add(Factory<Action>::Definition::createDef("Cuelist", "Go and add timecode", &CuelistAction::create)->addParam("actionType", CuelistAction::CL_GO_ADD_TIMECODE));
     defs.add(Factory<Action>::Definition::createDef("Cuelist", "Go and replace timecode", &CuelistAction::create)->addParam("actionType", CuelistAction::CL_GO_REPLACE_TIMECODE));
+    defs.add(Factory<Action>::Definition::createDef("Cuelist", "Off time", &CuelistAction::create)->addParam("actionType", CuelistAction::CL_OFFTIME));
+    defs.add(Factory<Action>::Definition::createDef("Cuelist", "Off time fixed", &CuelistAction::create)->addParam("actionType", CuelistAction::CL_OFFTIME_FIXED));
+
+
 
     defs.add(Factory<Action>::Definition::createDef("Effect", "Effect Start", &EffectAction::create)->addParam("actionType", EffectAction::FX_START));
     defs.add(Factory<Action>::Definition::createDef("Effect", "Effect Stop", &EffectAction::create)->addParam("actionType", EffectAction::FX_STOP));
@@ -149,6 +153,8 @@ ActionFactory::ActionFactory()
     defs.add(Factory<Action>::Definition::createDef("Bundle", "Bundle Swop", &BundleAction::create)->addParam("actionType", BundleAction::BUN_SWOP));
     defs.add(Factory<Action>::Definition::createDef("Bundle", "Bundle Timed Flash", &BundleAction::create)->addParam("actionType", BundleAction::BUN_TIMED_FLASH));
     defs.add(Factory<Action>::Definition::createDef("Bundle", "Bundle Timed Swop", &BundleAction::create)->addParam("actionType", BundleAction::BUN_TIMED_SWOP));
+    defs.add(Factory<Action>::Definition::createDef("Bundle", "Bundle Set Fade", &BundleAction::create)->addParam("actionType", BundleAction::BUN_FADE));
+    defs.add(Factory<Action>::Definition::createDef("Bundle", "Bundle Set Fade Fixed", &BundleAction::create)->addParam("actionType", BundleAction::BUN_FADE_FIXED));
 
     defs.add(Factory<Action>::Definition::createDef("SoloPool", "SoloPool Stop", &SoloPoolAction::create)->addParam("actionType", SoloPoolAction::SOLP_STOP));
     defs.add(Factory<Action>::Definition::createDef("SoloPool", "SoloPool Random", &SoloPoolAction::create)->addParam("actionType", SoloPoolAction::SOLP_RANDOM));

@@ -28,13 +28,18 @@ public:
                         CL_OFF_INSTANT, 
                         CL_LOADCONTENT, CL_INSERTBEFORE, CL_INSERTAFTER,
                         CL_TAKESELECTION,
-                        CL_GO_ADD_TIMECODE, CL_GO_REPLACE_TIMECODE
+                        CL_GO_ADD_TIMECODE, CL_GO_REPLACE_TIMECODE,
+                        CL_OFFTIME, CL_OFFTIME_FIXED
     };
     ActionType actionType;
     BoolParameter* useMainConductor;
     IntParameter* cuelistId;
     FloatParameter* cueId;
     FloatParameter* maxSpeed;
+
+    FloatParameter* offTimeFrom;
+    FloatParameter* offTimeTo;
+    FloatParameter* offTimeFixed;
 
     void triggerInternal() override;
     void setValueInternal(var value, String origin, int incrementIndex, bool isRelative) override;

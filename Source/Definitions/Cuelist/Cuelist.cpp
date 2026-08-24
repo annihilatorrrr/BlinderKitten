@@ -397,6 +397,9 @@ void Cuelist::onContainerParameterChangedInternal(Parameter* p) {
 	if (p == timecodeSyncInterface) {
 		timecodeInterfaceChanged();
 	}
+	if (p == offFade) {
+		Brain::getInstance()->virtualFadersNeedUpdate = true;
+	}
 }
 
 void Cuelist::triggerTriggered(Trigger* t) {

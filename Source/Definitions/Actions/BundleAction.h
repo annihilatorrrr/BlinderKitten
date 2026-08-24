@@ -19,7 +19,7 @@ public:
     BundleAction(var params = var());
     ~BundleAction();
 
-    enum ActionType { BUN_START, BUN_STOP, BUN_SIZE, BUN_SET_SIZE, BUN_SPEED, BUN_DOUBLESPEED, BUN_HALFSPEED, BUN_TAPTEMPO, BUN_FLASH, BUN_SWOP, BUN_TIMED_FLASH, BUN_TIMED_SWOP, BUN_STOP_INSTANT, BUN_SET_SPEED};
+    enum ActionType { BUN_START, BUN_STOP, BUN_SIZE, BUN_SET_SIZE, BUN_SPEED, BUN_DOUBLESPEED, BUN_HALFSPEED, BUN_TAPTEMPO, BUN_FLASH, BUN_SWOP, BUN_TIMED_FLASH, BUN_TIMED_SWOP, BUN_STOP_INSTANT, BUN_SET_SPEED, BUN_FADE, BUN_FADE_FIXED};
     ActionType actionType;
     IntParameter* targetId;
     FloatParameter* maxSpeed;
@@ -33,6 +33,13 @@ public:
     BoolParameter* useFlash;
 
     FloatParameter* forcedFade;
+
+    BoolParameter* inFade;
+    BoolParameter* outFade;
+
+    FloatParameter* fadeDurationFixed;
+    FloatParameter* fadeDurationFrom;
+    FloatParameter* fadeDurationTo;
 
     float lastValue = 0;
 

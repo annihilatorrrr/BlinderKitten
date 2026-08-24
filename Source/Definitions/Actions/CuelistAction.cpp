@@ -28,6 +28,13 @@ CuelistAction::CuelistAction(var params) :
     if (actionType == CL_CHASERSPEED) {
         maxSpeed = addFloatParameter("Max Speed", "Speed when your fader is up high", 600, 0);
     }
+    if (actionType == CL_OFFTIME) {
+        offTimeFrom = addFloatParameter("Off time min", "", 0,0 );
+        offTimeTo = addFloatParameter("Off time max", "", 1,0);
+    }
+    if (actionType == CL_OFFTIME_FIXED) {
+        offTimeFixed = addFloatParameter("Off time", "", 0,0);
+    }
 }
 
 CuelistAction::~CuelistAction()
@@ -329,9 +336,19 @@ void CuelistAction::setValueInternal(var value, String origin, int incrementInde
         }
         break;
 
+
+    case CL_OFFTIME: 
+        {
+        float offTime = jmap(val, 0.f, 1.f, offTimeFrom->floatValue(), offTimeTo->floatValue());
+        target->offFade->setValue(offTime);
+        break;
+        }
+
+    case CL_OFFTIME_FIXED:
+        target->offFade->setValue(offTimeFixed->floatValue());
+        break;
+
     }
-
-
 }
 
 void CuelistAction::onContainerParameterChangedInternal(Parameter* p)
@@ -401,12 +418,21 @@ var CuelistAction::getValue()
         break;
 
     case CL_FLASHLEVEL:
-        target->flashLevel->floatValue();
+        val = target->flashLevel->floatValue();
         break;
 
     case CL_CHASERTAPTEMPO:
         break;
+    
+    case CL_OFFTIME: 
+        val = jmap(target->offFade->floatValue(), offTimeFrom->floatValue(), offTimeTo->floatValue(), 0.f, 1.f);
+        break;
+    
+    case CL_OFFTIME_FIXED:
+        break;
     }
+
+
 
     return val;
 }

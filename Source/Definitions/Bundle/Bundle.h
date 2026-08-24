@@ -51,6 +51,8 @@ public:
     float lastSize = 0;
     float lastFlash = 0;
     float lastSpeed = 0;
+    float lastInFade = 0;
+    float lastOutFade = 0;
 
     bool toDelete = false;
 
@@ -70,6 +72,9 @@ public:
     void setSizeRel(float val, bool size, bool HTP, bool LTP, bool flash);
     void setSpeedRel(float val, bool tapTempoDivide = false);
     void speedMult(float mult);
+
+    void setFadeIn(float val);
+    void setFadeOut(float val);
 
     void onControllableFeedbackUpdate(ControllableContainer*, Controllable*) override;
     void triggerTriggered(Trigger* t);
