@@ -27,10 +27,13 @@ ChannelFamily::ChannelFamily(var params) :
 	
 	addChildControllableContainer(&definitions);
 	definitions.selectItemWhenCreated = false;
+	definitions.addBaseManagerListener(this);
+	
 }
 
 ChannelFamily::~ChannelFamily()
 {
+	definitions.removeBaseManagerListener(this);
 }
 
 void ChannelFamily::onContainerParameterChangedInternal(Parameter* p)
@@ -44,6 +47,18 @@ void ChannelFamily::onControllableFeedbackUpdateInternal(ControllableContainer* 
 
 	if (!enabled->boolValue()) return;
 
+}
+
+void ChannelFamily::itemAdded(ChannelType* ct)
+{
+	ct->parentFamily = this;
+}
+
+void ChannelFamily::itemsAdded(juce::Array<ChannelType*> cts)
+{
+	for (auto ct : cts) {
+		ct->parentFamily = this;
+	}
 }
 
 

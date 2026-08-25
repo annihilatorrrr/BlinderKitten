@@ -406,6 +406,9 @@ void Command::computeValues(Cuelist* callingCuelist, Cue* callingCue, Programmer
 			bool randomizeValue = cv->randomize->boolValue();
 			Preset* pFrom = nullptr;
 			Preset* pTo = nullptr;
+			ChannelType* rawChan = dynamic_cast<ChannelType*>(cv->channelType->targetContainer.get());
+			ChannelFamily* rawFam = dynamic_cast<ChannelFamily*>(cv->channelType->targetContainer.get());
+
 			if (cv->presetOrValue->getValue() == "preset") {
 				pFrom = Brain::getInstance()->getPresetById(cv->presetIdFrom->intValue(), true);
 				pTo = Brain::getInstance()->getPresetById(cv->presetIdTo->intValue(), true);
@@ -417,7 +420,6 @@ void Command::computeValues(Cuelist* callingCuelist, Cue* callingCue, Programmer
 				}
 			}
 
-			ChannelType* rawChan = dynamic_cast<ChannelType*>(cv->channelType->targetContainer.get());
 			float maxNormalizedPosition = 0;
 			HashMap<SubFixture*, float> subfixtToRandom;
 			for (int indexFixt = 0; indexFixt < subFixtures.size(); indexFixt++) {
@@ -472,8 +474,20 @@ void Command::computeValues(Cuelist* callingCuelist, Cue* callingCue, Programmer
 					valuesTo->set(rawChan, cv->valueTo->getValue());
 				}
 				else if (cv->presetOrValue->stringValue() == "release") {
-					valuesFrom->set(rawChan, -1);
-					valuesTo->set(rawChan, -1);
+					for (SubFixtureChannel* sfc : sf->channelsContainer) {
+						if (sfc->channelType == rawChan && rawChan != nullptr) {
+							valuesFrom->set(rawChan, -1);
+							valuesTo->set(rawChan, -1);
+						} else if (sfc->channelType->parentFamily == rawFam && rawFam != nullptr) {
+							valuesFrom->set(sfc->channelType, -1);
+							valuesTo->set(sfc->channelType, -1);
+						} else if (rawChan == nullptr && rawFam == nullptr) {
+							valuesFrom->set(sfc->channelType, -1);
+							valuesTo->set(sfc->channelType, -1);
+						}
+					}
+					
+
 				}
 
 				for (auto it = valuesFrom->begin(); it != valuesFrom->end(); it.next()) {

@@ -10,6 +10,7 @@
 
 #pragma once
 #include "JuceHeader.h"
+class ChannelFamily;
 
 class ChannelType:
     public BaseItem
@@ -20,6 +21,8 @@ class ChannelType:
 
     String objectType;
     var objectData;
+
+    ChannelFamily* parentFamily = nullptr;
 
     EnumParameter* priority;
     BoolParameter* reactGM;

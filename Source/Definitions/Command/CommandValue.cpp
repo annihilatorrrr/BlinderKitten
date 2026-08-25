@@ -82,6 +82,14 @@ void CommandValue::onContainerParameterChangedInternal(Parameter* p) {
     if (p == thru || p == presetOrValue) {
         updateDisplay();
     }
+    if (p == presetOrValue) {
+        if (presetOrValue->getValue() == "value") {
+            channelType->typesFilter.removeString("ChannelFamily");
+        }
+        if (presetOrValue->getValue() == "release") { 
+            channelType->typesFilter.add("ChannelFamily");
+        }
+    }
 }
 
 void CommandValue::afterLoadJSONDataInternal() {

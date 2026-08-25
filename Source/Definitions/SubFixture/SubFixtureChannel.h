@@ -51,7 +51,6 @@ public:
     bool reactToGrandMaster = false;
     int fineChannelDelta = 0;
 
-    ChannelFamily* parentParamType = nullptr;
     ChannelType* parentParamDefinition = nullptr;
     FixtureTypeChannel* parentFixtureTypeChannel = nullptr;
     FixtureTypeVirtualChannel* parentFixtureTypeVirtualChannel = nullptr;

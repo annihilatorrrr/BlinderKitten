@@ -13,7 +13,8 @@
 #include "ChannelType/ChannelType.h"
 
 class ChannelFamily :
-    public BaseItem
+    public BaseItem,
+    public BaseManagerListener<ChannelType>
 {
 public:
     ChannelFamily(var params = var());
@@ -26,6 +27,13 @@ public:
 
     void onContainerParameterChangedInternal(Parameter* p) override;
     void onControllableFeedbackUpdateInternal(ControllableContainer* cc, Controllable* c) override;
+
+    void itemAdded(ChannelType*) override;
+    void itemsAdded(juce::Array<ChannelType*>) override;
+    void itemRemoved(ChannelType*) {}
+    void itemsRemoved(juce::Array<ChannelType*>) {}
+    void itemsReordered() {}
+
 
     String getTypeString() const override { return objectType; }
     static ChannelFamily* create(var params) { return new ChannelFamily(params); }
