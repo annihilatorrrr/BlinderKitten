@@ -382,6 +382,17 @@ void Encoders::updateFilterBtns()
     resized();
 }
 
+static void setEncoderName(FloatParameter* p, String newName) {
+    p->setNiceName(newName);
+    for (Controllable::ControllableListener* e : p->controllableListeners.getListeners()) {
+        DashboardControllableItem* i = dynamic_cast<DashboardControllableItem*>(e);
+        if (i != nullptr) {
+            if (!i->customLabel->enabled) i->customLabel->setEnabled(true);
+            i->customLabel->setValue(newName);
+        }
+    }
+}
+
 void Encoders::updateEncoders() {
     Command * currentCommand = nullptr; 
     if (UserInputManager::getInstance()->currentProgrammer != nullptr) {
@@ -394,7 +405,7 @@ void Encoders::updateEncoders() {
     transmitOrganicToEncoder = false;
 
     for (int i = 0; i < nEncoders; i++) {
-        encodersParam[i]->setNiceName("e" + String(i + 1));
+        setEncoderName(encodersParam[i], "e" + String(i + 1));
     }
 
     for (int i = 0; i < nEncoders; i++) {
@@ -409,7 +420,7 @@ void Encoders::updateEncoders() {
         }
         else if (channels.size() > channelId) {
             labels[i]->setText(String(channels[channelId]->niceName), juce::sendNotification);
-            encodersParam[i]->setNiceName(String(channels[channelId]->niceName));
+            setEncoderName(encodersParam[i], String(channels[channelId]->niceName));
             encodersParam[i]->notifyStateChanged();
             UserInputManager::getInstance()->feedback("/encoder/" + String(i + 1), String(channels[channelId]->niceName), "");
             encoders[i]->setEnabled(true);
@@ -432,7 +443,7 @@ void Encoders::updateEncoders() {
         }
         else {
             labels[i]->setText("", juce::dontSendNotification);
-            encodersParam[i]->setNiceName("e"+String(i+1));
+            setEncoderName(encodersParam[i], "e" + String(i + 1));
             encodersParam[i]->notifyStateChanged();
             UserInputManager::getInstance()->feedback("/encoder/" + String(i + 1), "", "");
             encoders[i]->setEnabled(false);
