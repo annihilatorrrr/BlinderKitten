@@ -318,6 +318,11 @@ void DMXChannelItem::mouseDown(const MouseEvent& e)
 	valueAtMouseDown = value;
 	if (e.mods.isLeftButtonDown())
 	{
+		if (e.mods.isAltDown()) {
+			channelView->selectedItems.add(this);
+			tmpFlash = true;
+			return;
+		}
 		if (e.mods.isShiftDown() && !e.mods.isAltDown()) {
 		if (!channelView->selectedItems.contains(this)) {
 			channelView->rangeOn(channelView->lastClickedId, channelView->channelItems.indexOf(this));
