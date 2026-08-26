@@ -93,14 +93,15 @@ void CarouselRow::computeData() {
     }
 
     //LOG("step 3 " << (Time::getMillisecondCounterHiRes() - now));
-    float totalDuration = 0;
+    float totalDurationTmp = 0;
     float currentPosition = 0;
 
     //LOG("step 4 " << (Time::getMillisecondCounterHiRes() - now));
     for (int i = 0; i < paramContainer.items.size(); i++) {
-        totalDuration += (float)paramContainer.items[i]->stepDuration->getValue();
+        totalDurationTmp += (float)paramContainer.items[i]->stepDuration->getValue();
     }
-    if (totalDuration == 0) { return; }
+    if (totalDurationTmp == 0) { return; }
+    totalDuration = totalDurationTmp;
 
     //LOG("step 5 " << (Time::getMillisecondCounterHiRes() - now));
     for (int i = 0; i < paramContainer.items.size(); i++) {
@@ -143,20 +144,38 @@ void CarouselRow::computeData() {
     }
 
     //LOG("step 7 " << (Time::getMillisecondCounterHiRes() - now));
-    for (int i = 0; i < paramContainer.items.size(); i++) {
+    int nSteps = paramContainer.items.size();
+
+    for (int i = 0; i < nSteps; i++) {
         CarouselStep* currentStep = paramContainer.items[i];
+        HashMap<SubFixtureChannel*, CarouselStep*> chanToPreviousStep_temp;
+        HashMap<SubFixtureChannel*, CarouselStep*> chanToNextStep_temp;
         for (auto it = targetChannels.begin(); it!=targetChannels.end(); it.next()) {
-        //for (int ci = 0; ci < targetChannels.size(); ci++) {
-            //SubFixtureChannel* chan = targetChannels[ci];
             SubFixtureChannel* chan = it.getKey();
-            if (!currentStep->computedValues.contains(chan)) {
-                std::shared_ptr<ChannelValue> newVal = std::make_shared<ChannelValue>();
-                newVal->values.set(1,-1);
-                currentStep->computedValues.set(chan, newVal);
+            CarouselStep* nextStep = nullptr;
+            CarouselStep* prevStep = nullptr;
+            for (int iNext = 0; iNext < nSteps; iNext++) {
+                int nextId = (i+iNext)%nSteps;
+                int prevId = (nSteps + i -iNext -1) % nSteps;
+                if (nextStep == nullptr && paramContainer.items[nextId]->computedValues.contains(chan)) { nextStep = paramContainer.items[nextId]; }
+                if (prevStep == nullptr && paramContainer.items[prevId]->computedValues.contains(chan)) { prevStep = paramContainer.items[prevId]; }
+            }
+            chanToPreviousStep_temp.set(chan, prevStep);
+            chanToNextStep_temp.set(chan, nextStep);
+        }
+        chanToPreviousStep_temp.swapWith(currentStep->chanToPreviousStep);
+        chanToNextStep_temp.swapWith(currentStep->chanToNextStep);
+    }
+
+    for (CarouselStep* step : paramContainer.items) {
+        for (auto it = step->computedValues.begin(); it != step->computedValues.end(); it.next()) {
+            SubFixtureChannel* sfc = it.getKey();
+            CarouselStep* prev = step->chanToPreviousStep.getReference(sfc);
+            if (step->computedValues.contains(sfc)) { 
+                step->computedValues.getReference(sfc)->values.set(0,prev->computedValues.getReference(sfc)->endValue());
             }
         }
     }
-
 
     HashMap<SubFixture*, int> subFixtureToIndex;
     for (int i = 0; i < selection.computedSelectedSubFixtures.size(); i++) {
@@ -207,7 +226,7 @@ void CarouselRow::computeData() {
                 // //LOG(offset);
                 subFixtureChannelOffsets_temp.set(chan, -offset);
             }
-            currentStep->computedValues.getReference(chan)->values.set(0,cValue->endValue());
+            
         }
 
     }

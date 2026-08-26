@@ -45,6 +45,7 @@ class CarouselRow:
     CriticalSection isComputing;
     HashMap<SubFixture*, double> computedPositions;
     HashMap<SubFixtureChannel*,double> subFixtureChannelOffsets;
+    float totalDuration = 0;
 
     Carousel* parentCarousel = nullptr;
 

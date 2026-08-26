@@ -258,7 +258,7 @@ void Carousel::update(double now) {
 			double currentSpeed = speed->getValue();
 			float speedMultVal = speedMult.getValue();
 			currentSpeed *= speedMultVal;
-			if (speed != 0) {
+			if (speed->floatValue() != 0) {
 				double duration = 60000. / currentSpeed;
 				double delta = deltaTime / duration;
 				totalElapsed += delta;
@@ -332,30 +332,55 @@ float Carousel::applyToChannel(SubFixtureChannel* fc, float currentVal, double n
 		offset = fmodf(offset, 1);
 		
 		CarouselStep* toApply = nullptr;
-		
+
+		// On cherche la prochaine step temporelle après notre position actuelle
 		for (int stepId = 0; stepId < r->paramContainer.items.size(); stepId++) {
 			CarouselStep* step = r->paramContainer.items[stepId];
 			step->checkParentCarousel();
-			if (step->relativeStartPosition <= offset) {
+
+			if (step->relativeStartPosition > offset) {
 				toApply = step;
-			}	
+				break;
+			}
+		}
+
+		// Si on est après la dernière step, on reboucle sur la première
+		if (toApply == nullptr && r->paramContainer.items.size() > 0) {
+			toApply = r->paramContainer.items[0];
 		}
 
 		if (toApply == nullptr) {
-			//isComputing.exit();
 			return currentVal;
 		}
-		std::shared_ptr<ChannelValue> cVal = toApply->computedValues.contains(fc) ? toApply->computedValues.getReference(fc) : nullptr;
+
+
+		CarouselStep* prevStep = toApply->chanToPreviousStep.getReference(fc);
+		CarouselStep* nextStep = toApply->chanToNextStep.getReference(fc);
+		if (nextStep == nullptr || prevStep == nullptr) return currentVal;
+		std::shared_ptr<ChannelValue> cVal = nextStep->computedValues.contains(fc) ? nextStep->computedValues.getReference(fc) : nullptr;
 		if (cVal != nullptr) {
 			float fadeValue = 1;
 			if (cVal->htpOverride) {
 				htpOver = true;
 			}
-			float fadeWidth = toApply->fadeRatio->getValue();
-			float pos = (offset-toApply->relativeStartPosition) / toApply->relativeDuration;
+			float fadeWidth = nextStep->fadeRatio->getValue();
+			float prevPos = prevStep->relativeStartPosition;
+			float nextPos = nextStep->relativeStartPosition;
+
+			float duration = nextPos - prevPos;
+			while (duration <= 0)
+				duration += 1.0f;
+
+
+			float elapsed = offset - prevPos;
+			while (elapsed < 0)
+				elapsed += 1.0f;
+
+			
+			float pos = elapsed / duration;
 			if (pos < fadeWidth) {
 				fadeValue = pos/fadeWidth;
-				fadeValue = toApply->curve.getValueAtPosition(fadeValue);
+				fadeValue = nextStep->curve.getValueAtPosition(fadeValue);
 			}
 
 			float start = cVal->startValue();

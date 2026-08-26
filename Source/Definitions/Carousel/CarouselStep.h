@@ -37,6 +37,8 @@ class CarouselStep:
 
     void computeValues(Array<SubFixture*> &SubFixtures);
     HashMap<SubFixtureChannel*, std::shared_ptr<ChannelValue>> computedValues;
+    HashMap<SubFixtureChannel*, CarouselStep*> chanToPreviousStep;
+    HashMap<SubFixtureChannel*, CarouselStep*> chanToNextStep;
     CriticalSection isComputing;
 
     Carousel * parentCarousel = nullptr;

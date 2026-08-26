@@ -106,6 +106,7 @@ void CarouselStep::computeValues(Array<SubFixture*> &SubFixtures) {
 		}
 		//LOG("sub step 1 " << Time::getMillisecondCounterHiRes() - now);
 		ChannelType* rawChan = dynamic_cast<ChannelType*>(cv->channelType->targetContainer.get());
+		ChannelFamily* rawFam = dynamic_cast<ChannelFamily*>(cv->channelType->targetContainer.get());
 		for (int indexFixt = 0; indexFixt < SubFixtures.size(); indexFixt++) {
 
 			if (indexFixt <2) {
@@ -137,6 +138,25 @@ void CarouselStep::computeValues(Array<SubFixture*> &SubFixtures) {
 				valuesFrom->set(rawChan, cv->valueFrom->getValue());
 				valuesTo->set(rawChan, cv->valueTo->getValue());
 			}
+			else if (cv->presetOrValue->stringValue() == "release") {
+				for (SubFixtureChannel* sfc : SubFixtures[indexFixt]->channelsContainer) {
+					if (sfc->channelType == rawChan && rawChan != nullptr) {
+						valuesFrom->set(rawChan, -1);
+						valuesTo->set(rawChan, -1);
+					}
+					else if (sfc->channelType->parentFamily == rawFam && rawFam != nullptr) {
+						valuesFrom->set(sfc->channelType, -1);
+						valuesTo->set(sfc->channelType, -1);
+					}
+					else if (rawChan == nullptr && rawFam == nullptr) {
+						valuesFrom->set(sfc->channelType, -1);
+						valuesTo->set(sfc->channelType, -1);
+					}
+				}
+
+
+			}
+
 
 			if (indexFixt <2) {
 				//LOG("sub step 3 " << Time::getMillisecondCounterHiRes() - now);
