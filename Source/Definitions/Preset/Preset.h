@@ -36,6 +36,7 @@ public:
 
     TargetParameter* devTypeParam;
     EnumParameter* presetType;
+    BoolParameter* ignoreInPalettes;
     Trigger* testMeButton;
     Trigger* reOrderButton;
     Trigger* removeProgContentBtn;

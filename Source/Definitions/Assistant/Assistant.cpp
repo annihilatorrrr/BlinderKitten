@@ -415,7 +415,7 @@ void Assistant::createPalette()
     bool nextIsNewLine = false;
     for (int i = presetFrom; i != presetTo + delta; i += delta) {
         Preset* p = Brain::getInstance()->getPresetById(i);
-        if (p != nullptr) {
+        if (p != nullptr && !p->ignoreInPalettes->boolValue()) {
             String name = p->userName->getValue().toString();
             Cue* c = new Cue();
             cuesToAdd.add(c);

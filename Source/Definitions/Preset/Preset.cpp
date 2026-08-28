@@ -71,6 +71,8 @@ Preset::Preset(var params) :
 	presetType->addOption("Fixture Type", 3);
 	presetType->addOption("Same Channels type", 4);
 
+	ignoreInPalettes = addBoolParameter("Ignore in palettes", "if checked, this preset will not be included in palettes", false);
+
 	// to add a manager with defined data
 	subFixtureValues.selectItemWhenCreated = false;
 	subFixtureValues.comparator.compareFunc = comparePresetContent;
