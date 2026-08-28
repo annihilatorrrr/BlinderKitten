@@ -99,6 +99,7 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/VirtualFaderSlider_540aaa8f.o \
   $(JUCE_OBJDIR)/BKColorPicker_26a4f576.o \
   $(JUCE_OBJDIR)/Clock_9b1dd19c.o \
+  $(JUCE_OBJDIR)/TimecodeView_41edcf3b.o \
   $(JUCE_OBJDIR)/ConductorInfos_9dff399a.o \
   $(JUCE_OBJDIR)/CuelistLoadWindow_9733d835.o \
   $(JUCE_OBJDIR)/DMXChannelView_4a36d235.o \
@@ -415,6 +416,11 @@ $(JUCE_OBJDIR)/BKColorPicker_26a4f576.o: ../../Source/UI/BKColorPicker.cpp
 $(JUCE_OBJDIR)/Clock_9b1dd19c.o: ../../Source/UI/Clock.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling Clock.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/TimecodeView_41edcf3b.o: ../../Source/UI/TimecodeView.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling TimecodeView.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/ConductorInfos_9dff399a.o: ../../Source/UI/ConductorInfos.cpp

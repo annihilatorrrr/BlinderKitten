@@ -3165,6 +3165,9 @@
     <ClCompile Include="..\..\Modules\juce_organicui\dashboard\SharedTextureDashboardItem.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\Modules\juce_organicui\engine\AppVersion.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\Modules\juce_organicui\engine\Engine.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -4831,6 +4834,7 @@
     <ClInclude Include="..\..\Modules\juce_organicui\dashboard\DashboardLinkItem.h"/>
     <ClInclude Include="..\..\Modules\juce_organicui\dashboard\DashboardManager.h"/>
     <ClInclude Include="..\..\Modules\juce_organicui\dashboard\SharedTextureDashboardItem.h"/>
+    <ClInclude Include="..\..\Modules\juce_organicui\engine\AppVersion.h"/>
     <ClInclude Include="..\..\Modules\juce_organicui\engine\Engine.h"/>
     <ClInclude Include="..\..\Modules\juce_organicui\engine\EngineListener.h"/>
     <ClInclude Include="..\..\Modules\juce_organicui\help\HelpBox.h"/>
