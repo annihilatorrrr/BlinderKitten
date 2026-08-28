@@ -73,6 +73,9 @@ void CommandValue::updateDisplay()
     symmetry->hideInEditor = !th || randomize->boolValue();
     randomize->hideInEditor = !th;
 
+    thru->hideInEditor = rel;
+    HTPOverride->hideInEditor = rel;
+
     stepSize->hideInEditor = !shouldShowStepSize;
 
     queuedNotifier.addMessage(new ContainerAsyncEvent(ContainerAsyncEvent::ControllableContainerNeedsRebuild, this));
