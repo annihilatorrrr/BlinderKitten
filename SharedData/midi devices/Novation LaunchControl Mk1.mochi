@@ -1,0 +1,2667 @@
+{
+  "interfaces": [
+    {
+      "parameters": [
+        {
+          "value": true,
+          "controlAddress": "/enabled"
+        },
+        {
+          "value": true,
+          "controlAddress": "/logIncoming"
+        },
+        {
+          "value": [
+            "-34506492",
+            "1138872544"
+          ],
+          "controlAddress": "/device"
+        },
+        {
+          "value": true,
+          "controlAddress": "/autoAdd"
+        },
+        {
+          "value": false,
+          "controlAddress": "/midiTimecode"
+        }
+      ],
+      "niceName": "LaunchControl",
+      "containers": {
+        "startSysexContent": {
+          "editorIsCollapsed": true
+        },
+        "mappings": {
+          "items": [
+            {
+              "parameters": [
+                {
+                  "value": "Linear",
+                  "controlAddress": "/mode"
+                },
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/channel"
+                },
+                {
+                  "value": 9,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                },
+                {
+                  "value": false,
+                  "controlAddress": "/strictMode"
+                }
+              ],
+              "niceName": "Encoder 1",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "niceName": "Fader Move",
+                      "type": "Fader Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Linear",
+                  "controlAddress": "/mode"
+                },
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/channel"
+                },
+                {
+                  "value": 10,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                },
+                {
+                  "value": false,
+                  "controlAddress": "/strictMode"
+                }
+              ],
+              "niceName": "Encoder 2",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 2,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Fader Move",
+                      "type": "Fader Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": true,
+                  "controlAddress": "/enabled"
+                },
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/channel"
+                },
+                {
+                  "value": 11,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                },
+                {
+                  "value": false,
+                  "controlAddress": "/strictMode"
+                }
+              ],
+              "niceName": "Encoder 3",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 3,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Fader Move",
+                      "type": "Fader Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/channel"
+                },
+                {
+                  "value": 12,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                },
+                {
+                  "value": false,
+                  "controlAddress": "/strictMode"
+                }
+              ],
+              "niceName": "Encoder 4",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 4,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Fader Move",
+                      "type": "Fader Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/channel"
+                },
+                {
+                  "value": 13,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                },
+                {
+                  "value": false,
+                  "controlAddress": "/strictMode"
+                }
+              ],
+              "niceName": "Encoder 5",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 5,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Fader Move",
+                      "type": "Fader Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/channel"
+                },
+                {
+                  "value": 14,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                },
+                {
+                  "value": false,
+                  "controlAddress": "/strictMode"
+                }
+              ],
+              "niceName": "Encoder 6",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 6,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Fader Move",
+                      "type": "Fader Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/channel"
+                },
+                {
+                  "value": 15,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                },
+                {
+                  "value": false,
+                  "controlAddress": "/strictMode"
+                }
+              ],
+              "niceName": "Encoder 7",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 7,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Fader Move",
+                      "type": "Fader Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/channel"
+                },
+                {
+                  "value": 16,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                },
+                {
+                  "value": false,
+                  "controlAddress": "/strictMode"
+                }
+              ],
+              "niceName": "Encoder 8",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 8,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Fader Move",
+                      "type": "Fader Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 41,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "Encoder 9",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "niceName": "Encoder Move",
+                      "type": "Encoder Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 42,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "Encoder 10",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 2,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Encoder Move",
+                      "type": "Encoder Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 43,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "Encoder 11",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 3,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Encoder Move",
+                      "type": "Encoder Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 44,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "Encoder 12",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 4,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Encoder Move",
+                      "type": "Encoder Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 45,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "Encoder 13",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 5,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Encoder Move",
+                      "type": "Encoder Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 46,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "Encoder 14",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 6,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Encoder Move",
+                      "type": "Encoder Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 47,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "Encoder 17",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 7,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Encoder Move",
+                      "type": "Encoder Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 48,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "Encoder 16",
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 8,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Encoder Move",
+                      "type": "Encoder Move"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 71,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "PAD 1",
+              "editorIsCollapsed": true,
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "niceName": "Below Button Press",
+                      "type": "Below Button Press"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 72,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "PAD 2",
+              "editorIsCollapsed": true,
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 2,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Below Button Press",
+                      "type": "Below Button Press"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 38,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "PAD 3",
+              "editorIsCollapsed": true,
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 3,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        },
+                        {
+                          "value": 1,
+                          "hexMode": false,
+                          "controlAddress": "/number"
+                        }
+                      ],
+                      "niceName": "Below Button Press",
+                      "type": "Below Button Press"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 39,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "PAD 4",
+              "editorIsCollapsed": true,
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 4,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Below Button Press",
+                      "type": "Below Button Press"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 40,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "PAD 5",
+              "editorIsCollapsed": true,
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 5,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Below Button Press",
+                      "type": "Below Button Press"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 41,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "PAD 6",
+              "editorIsCollapsed": true,
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 6,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Below Button Press",
+                      "type": "Below Button Press"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 42,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "PAD 7",
+              "editorIsCollapsed": true,
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 7,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Below Button Press",
+                      "type": "Below Button Press"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 43,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "PAD 8",
+              "editorIsCollapsed": true,
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 8,
+                          "hexMode": false,
+                          "controlAddress": "/column"
+                        }
+                      ],
+                      "niceName": "Below Button Press",
+                      "type": "Below Button Press"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 68,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": ">",
+              "editorIsCollapsed": true,
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "niceName": "Virtual Faders Page Up",
+                      "type": "Virtual Faders Page Up"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": true,
+                  "controlAddress": "/enabled"
+                },
+                {
+                  "value": 67,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "<",
+              "editorIsCollapsed": true,
+              "containers": {
+                "actions": {
+                  "items": [
+                    {
+                      "niceName": "Virtual Faders Page Down",
+                      "type": "Virtual Faders Page Down"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": true,
+                  "controlAddress": "/enabled"
+                },
+                {
+                  "value": 85,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "v",
+              "containers": {
+                "actions": {
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": true,
+                  "controlAddress": "/enabled"
+                },
+                {
+                  "value": 84,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "^",
+              "containers": {
+                "actions": {
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 9,
+                  "hexMode": false,
+                  "controlAddress": "/channel"
+                },
+                {
+                  "value": 41,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "Control change 41 Channel 9",
+              "containers": {
+                "actions": {
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": "Control Change",
+                  "controlAddress": "/type"
+                },
+                {
+                  "value": 9,
+                  "hexMode": false,
+                  "controlAddress": "/channel"
+                },
+                {
+                  "value": 21,
+                  "hexMode": false,
+                  "controlAddress": "/pitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    127.0
+                  ],
+                  "controlAddress": "/inputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/inputRange14b"
+                },
+                {
+                  "value": [
+                    0.0,
+                    10.0
+                  ],
+                  "controlAddress": "/upRange"
+                },
+                {
+                  "value": [
+                    64.0,
+                    75.0
+                  ],
+                  "controlAddress": "/downRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    0.1000000014901161
+                  ],
+                  "controlAddress": "/valueRange"
+                }
+              ],
+              "niceName": "Control change 21 Channel 9",
+              "containers": {
+                "actions": {
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "BaseItem"
+            }
+          ],
+          "viewOffset": [
+            0,
+            0
+          ],
+          "viewZoom": 1.0
+        },
+        "feedbacks": {
+          "editorIsCollapsed": true,
+          "items": [
+            {
+              "parameters": [
+                {
+                  "value": true,
+                  "controlAddress": "/enabled"
+                },
+                {
+                  "value": "Virtual fader below button",
+                  "controlAddress": "/sourceType"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/sourceColumn"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/sourceNumber"
+                },
+                {
+                  "value": "Note",
+                  "controlAddress": "/midiType"
+                },
+                {
+                  "value": 71,
+                  "hexMode": false,
+                  "controlAddress": "/midiPitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    3.0
+                  ],
+                  "controlAddress": "/midiOutputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/midiOutputRange14b"
+                },
+                {
+                  "value": 127,
+                  "hexMode": false,
+                  "controlAddress": "/onValue"
+                }
+              ],
+              "niceName": "PAD 1",
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": true,
+                  "controlAddress": "/enabled"
+                },
+                {
+                  "value": "Virtual fader below button",
+                  "controlAddress": "/sourceType"
+                },
+                {
+                  "value": 2,
+                  "hexMode": false,
+                  "controlAddress": "/sourceColumn"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/sourceNumber"
+                },
+                {
+                  "value": "Note",
+                  "controlAddress": "/midiType"
+                },
+                {
+                  "value": 72,
+                  "hexMode": false,
+                  "controlAddress": "/midiPitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    3.0
+                  ],
+                  "controlAddress": "/midiOutputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/midiOutputRange14b"
+                },
+                {
+                  "value": 127,
+                  "hexMode": false,
+                  "controlAddress": "/onValue"
+                },
+                {
+                  "value": 0,
+                  "hexMode": false,
+                  "controlAddress": "/offValue"
+                },
+                {
+                  "value": 0,
+                  "hexMode": false,
+                  "controlAddress": "/currentCueValue"
+                },
+                {
+                  "value": 0,
+                  "hexMode": false,
+                  "controlAddress": "/loadedCueValue"
+                },
+                {
+                  "value": 0,
+                  "hexMode": false,
+                  "controlAddress": "/genericActionValue"
+                }
+              ],
+              "niceName": "PAD 2",
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": true,
+                  "controlAddress": "/enabled"
+                },
+                {
+                  "value": "Virtual fader below button",
+                  "controlAddress": "/sourceType"
+                },
+                {
+                  "value": 3,
+                  "hexMode": false,
+                  "controlAddress": "/sourceColumn"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/sourceNumber"
+                },
+                {
+                  "value": "Note",
+                  "controlAddress": "/midiType"
+                },
+                {
+                  "value": 38,
+                  "hexMode": false,
+                  "controlAddress": "/midiPitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    3.0
+                  ],
+                  "controlAddress": "/midiOutputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/midiOutputRange14b"
+                },
+                {
+                  "value": 127,
+                  "hexMode": false,
+                  "controlAddress": "/onValue"
+                }
+              ],
+              "niceName": "PAD 3",
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": true,
+                  "controlAddress": "/enabled"
+                },
+                {
+                  "value": "Virtual fader below button",
+                  "controlAddress": "/sourceType"
+                },
+                {
+                  "value": 4,
+                  "hexMode": false,
+                  "controlAddress": "/sourceColumn"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/sourceNumber"
+                },
+                {
+                  "value": "Note",
+                  "controlAddress": "/midiType"
+                },
+                {
+                  "value": 39,
+                  "hexMode": false,
+                  "controlAddress": "/midiPitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    3.0
+                  ],
+                  "controlAddress": "/midiOutputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/midiOutputRange14b"
+                },
+                {
+                  "value": 127,
+                  "hexMode": false,
+                  "controlAddress": "/onValue"
+                }
+              ],
+              "niceName": "PAD 4",
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": true,
+                  "controlAddress": "/enabled"
+                },
+                {
+                  "value": "Virtual fader below button",
+                  "controlAddress": "/sourceType"
+                },
+                {
+                  "value": 5,
+                  "hexMode": false,
+                  "controlAddress": "/sourceColumn"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/sourceNumber"
+                },
+                {
+                  "value": "Note",
+                  "controlAddress": "/midiType"
+                },
+                {
+                  "value": 40,
+                  "hexMode": false,
+                  "controlAddress": "/midiPitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    3.0
+                  ],
+                  "controlAddress": "/midiOutputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/midiOutputRange14b"
+                },
+                {
+                  "value": 127,
+                  "hexMode": false,
+                  "controlAddress": "/onValue"
+                }
+              ],
+              "niceName": "PAD 5",
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": true,
+                  "controlAddress": "/enabled"
+                },
+                {
+                  "value": "Virtual fader below button",
+                  "controlAddress": "/sourceType"
+                },
+                {
+                  "value": 6,
+                  "hexMode": false,
+                  "controlAddress": "/sourceColumn"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/sourceNumber"
+                },
+                {
+                  "value": "Note",
+                  "controlAddress": "/midiType"
+                },
+                {
+                  "value": 41,
+                  "hexMode": false,
+                  "controlAddress": "/midiPitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    3.0
+                  ],
+                  "controlAddress": "/midiOutputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/midiOutputRange14b"
+                },
+                {
+                  "value": 127,
+                  "hexMode": false,
+                  "controlAddress": "/onValue"
+                }
+              ],
+              "niceName": "PAD 6",
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": true,
+                  "controlAddress": "/enabled"
+                },
+                {
+                  "value": "Virtual fader below button",
+                  "controlAddress": "/sourceType"
+                },
+                {
+                  "value": 7,
+                  "hexMode": false,
+                  "controlAddress": "/sourceColumn"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/sourceNumber"
+                },
+                {
+                  "value": "Note",
+                  "controlAddress": "/midiType"
+                },
+                {
+                  "value": 42,
+                  "hexMode": false,
+                  "controlAddress": "/midiPitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    3.0
+                  ],
+                  "controlAddress": "/midiOutputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/midiOutputRange14b"
+                },
+                {
+                  "value": 127,
+                  "hexMode": false,
+                  "controlAddress": "/onValue"
+                },
+                {
+                  "value": 0,
+                  "hexMode": false,
+                  "controlAddress": "/offValue"
+                }
+              ],
+              "niceName": "PAD 7",
+              "type": "BaseItem"
+            },
+            {
+              "parameters": [
+                {
+                  "value": true,
+                  "controlAddress": "/enabled"
+                },
+                {
+                  "value": "Virtual fader below button",
+                  "controlAddress": "/sourceType"
+                },
+                {
+                  "value": 8,
+                  "hexMode": false,
+                  "controlAddress": "/sourceColumn"
+                },
+                {
+                  "value": 1,
+                  "hexMode": false,
+                  "controlAddress": "/sourceNumber"
+                },
+                {
+                  "value": "Note",
+                  "controlAddress": "/midiType"
+                },
+                {
+                  "value": 43,
+                  "hexMode": false,
+                  "controlAddress": "/midiPitchOrNumber"
+                },
+                {
+                  "value": [
+                    0.0,
+                    3.0
+                  ],
+                  "controlAddress": "/midiOutputRange"
+                },
+                {
+                  "value": [
+                    0.0,
+                    16383.0
+                  ],
+                  "controlAddress": "/midiOutputRange14b"
+                },
+                {
+                  "value": 127,
+                  "hexMode": false,
+                  "controlAddress": "/onValue"
+                }
+              ],
+              "niceName": "PAD 8",
+              "type": "BaseItem"
+            }
+          ],
+          "viewOffset": [
+            0,
+            0
+          ],
+          "viewZoom": 1.0
+        }
+      },
+      "type": "MIDI"
+    }
+  ],
+  "channelFamilies": null,
+  "fixtureType": null,
+  "fixture": null,
+  "group": null,
+  "preset": null,
+  "command": null,
+  "cuelist": null,
+  "programmer": null,
+  "curvePreset": null,
+  "timingPreset": null,
+  "bKPathPreset": null,
+  "carousel": null,
+  "mapper": null,
+  "tracker": null,
+  "selectionMaster": null,
+  "multiplicators": null,
+  "effect": null,
+  "stamp": null,
+  "2dPlans": null,
+  "virtualButton": null,
+  "virtualFaderCol": null,
+  "bundle": null,
+  "dashboards": null
+}
