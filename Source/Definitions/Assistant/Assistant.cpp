@@ -1096,10 +1096,12 @@ void Assistant::importAscii()
                     for (int iChan = 1; iChan < words.size() - 1; iChan += 2) {
                         int fixt = words[iChan].getIntValue();
                         float level = asciiLevelToFloat(words[iChan + 1]);
-                        Command* com = currentCue->commands.addItem();
-                        com->selection.items[0]->valueFrom->setValue(fixt);
-                        com->values.items[0]->channelType->setValue(asciiDimmerChannel->getValue());
-                        com->values.items[0]->valueFrom->setValue(level);
+                        if (level > 0) {
+                            Command* com = currentCue->commands.addItem();
+                            com->selection.items[0]->valueFrom->setValue(fixt);
+                            com->values.items[0]->channelType->setValue(asciiDimmerChannel->getValue());
+                            com->values.items[0]->valueFrom->setValue(level);
+                        }
                     }
                 }
                 else if (currentSecondary == "$$CHANMOVE") {
@@ -1108,9 +1110,9 @@ void Assistant::importAscii()
                         float level = asciiLevelToFloat(words[iChan + 1]);
                         Array<String> starts = { "IP", "FP", "CP", "BP", "PR" };
                         String begin = words[iChan + 1].substring(0, 2);
-                        Command* com = currentCue->commands.addItem();
-                        com->selection.items[0]->valueFrom->setValue(fixt);
                         if (starts.contains(begin)) {
+                            Command* com = currentCue->commands.addItem();
+                            com->selection.items[0]->valueFrom->setValue(fixt);
                             com->values.items[0]->presetOrValue->setValueWithData("preset");
                             if (!idToPreset.contains(words[iChan + 1])) {
                                 Preset* p = PresetManager::getInstance()->addItem();
@@ -1120,7 +1122,9 @@ void Assistant::importAscii()
                             com->values.items[0]->channelType->setValue(asciiDimmerChannel->getValue());
                             com->values.items[0]->presetIdFrom->setValue(target->id->intValue());
                         }
-                        else {
+                        else if (level >0) {
+                            Command* com = currentCue->commands.addItem();
+                            com->selection.items[0]->valueFrom->setValue(fixt);
                             com->values.items[0]->channelType->setValue(asciiDimmerChannel->getValue());
                             com->values.items[0]->valueFrom->setValue(level);
                         }
