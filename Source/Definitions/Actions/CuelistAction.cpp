@@ -290,6 +290,12 @@ void CuelistAction::setValueInternal(var value, String origin, int incrementInde
         }
         break;
 
+    case CL_LOADCONTENTWITHTRACKING:
+        if (val == 1) {
+            MessageManager::callAsync([target]() {target->loadContentWithTracking(); });
+        }
+        break;
+
     case CL_INSERTBEFORE:
         if (val == 1) {
             MessageManager::callAsync([target]() {

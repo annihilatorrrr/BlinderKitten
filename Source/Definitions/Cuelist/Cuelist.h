@@ -258,6 +258,8 @@ public:
 
     void loadContent();
     void loadContent(Programmer* p);
+    void loadContentWithTracking();
+    void loadContentWithTracking(Programmer* p);
     void tempMergeProgrammer(Programmer* p, bool trackValues = true);
 
     void forceCueId(Cue*c, float id);

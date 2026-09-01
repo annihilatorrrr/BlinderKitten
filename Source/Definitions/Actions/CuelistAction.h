@@ -29,7 +29,8 @@ public:
                         CL_LOADCONTENT, CL_INSERTBEFORE, CL_INSERTAFTER,
                         CL_TAKESELECTION,
                         CL_GO_ADD_TIMECODE, CL_GO_REPLACE_TIMECODE,
-                        CL_OFFTIME, CL_OFFTIME_FIXED
+                        CL_OFFTIME, CL_OFFTIME_FIXED,
+                        CL_LOADCONTENTWITHTRACKING
     };
     ActionType actionType;
     BoolParameter* useMainConductor;

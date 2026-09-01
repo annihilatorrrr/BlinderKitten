@@ -35,6 +35,7 @@ ConductorInfos::ConductorInfos()
     addAndMakeVisible(inspectBtn); inspectBtn.setWantsKeyboardFocus(false);
     addAndMakeVisible(updateBtn); updateBtn.setWantsKeyboardFocus(false);
     addAndMakeVisible(loadCurrentCueBtn); loadCurrentCueBtn.setWantsKeyboardFocus(false);
+    addAndMakeVisible(loadContentTrackingCueBtn); loadContentTrackingCueBtn.setWantsKeyboardFocus(false);
 
     currentCueName.addListener(this);
     currentCueId.addListener(this);
@@ -63,9 +64,12 @@ ConductorInfos::ConductorInfos()
     inspectCurrBtn.onClick = [this]() {inspect(0); };
     inspectNextBtn.onClick = [this]() {inspect(1); };
     inspectCuelistBtn.onClick = [this]() {inspectCuelist(); };
-    loadCurrentCueBtn.onClick = [this]() { 
-        UserInputManager::getInstance()->loadContentConductor();
-    };
+    loadCurrentCueBtn.onClick = [this]() {
+        UserInputManager::getInstance()->loadContentConductor(false);
+        };
+    loadContentTrackingCueBtn.onClick = [this]() {
+        UserInputManager::getInstance()->loadContentConductor(true);
+        };
 
     inspectBtn.onClick = [this]() {
         PopupMenu p;
@@ -98,7 +102,8 @@ ConductorInfos::ConductorInfos()
     addAndMakeVisible(delayLabel);
 
     displayBtn.setButtonText("Text");
-    loadCurrentCueBtn.setButtonText("Load content current cue");
+    loadCurrentCueBtn.setButtonText("Load content");
+    loadContentTrackingCueBtn.setButtonText("Load content track");
     inspectBtn.setButtonText("Inspect");
     updateBtn.setButtonText("Merge");
 
@@ -201,11 +206,12 @@ void ConductorInfos::resized()
 
     int idW = titleSize*3;
 
-    displayBtn.setBounds(w * 0 / 5, 0, w / 5, 20);
-    inspectBtn.setBounds(w * 1 / 5, 0, w / 5, 20);
-    mainIdSlider->setBounds(w * 2 / 5, 0, w / 5, 20);
-    loadCurrentCueBtn.setBounds(w * 3 / 5, 0, w / 5, 20);
-    updateBtn.setBounds(w * 4 / 5, 0, w / 5, 20);
+    displayBtn.setBounds(w * 0 / 6, 0, w / 6, 20);
+    inspectBtn.setBounds(w * 1 / 6, 0, w / 6, 20);
+    mainIdSlider->setBounds(w * 2 / 6, 0, w / 6, 20);
+    loadCurrentCueBtn.setBounds(w * 3 / 6, 0, w / 6, 20);
+    loadContentTrackingCueBtn.setBounds(w * 4 / 6, 0, w / 6, 20);
+    updateBtn.setBounds(w * 5 / 6, 0, w / 6, 20);
 
     currentCueId.setBounds(0, 20, idW, floor(currentCueHeight));
     currentCueName.setBounds(idW, 20, w-idW, floor(currentCueHeight));

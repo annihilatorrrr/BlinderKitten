@@ -501,7 +501,7 @@ void Cue::loadContent(Programmer* p)
 	MessageManager::callAsync([this, p](){
 		if (p != nullptr) 
 			{
-			p->clearAll();
+			//p->clearAll();
 			for (int i = 0; i < commands.items.size(); i++) 
 				{
 				Command* com = p->commands.addItem();
@@ -510,9 +510,28 @@ void Cue::loadContent(Programmer* p)
 
 			p->checkCurrentUserCommand();
 			UserInputManager::getInstance()->programmerCommandStructureChanged(p);
-			LOG("Cue content loaded in programmer");
+			//LOG("Cue content loaded in programmer");
 			}
 		});
+}
+
+void Cue::loadContentWithTracking(Programmer* p)
+{
+	if (!MessageManager::getInstance()->isThisTheMessageThread()) {
+		loadContentWithTracking(p);
+		return;
+	}
+	checkParentCuelist();
+	Array<Cue*> cuesToLoad;
+	for (Cue* c : parentCuelist->cues.items) {
+		if (c->releaseCurrentTracking->boolValue()) cuesToLoad.clear();
+		cuesToLoad.add(c);
+		if (c == this) break;
+	}
+	for (Cue* c : cuesToLoad) {
+		c->loadContent(p);
+	}
+	p->cleanUnused();
 }
 
 void Cue::replaceContent(Programmer* p)

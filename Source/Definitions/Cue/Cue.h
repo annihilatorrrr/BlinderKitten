@@ -90,6 +90,7 @@ public:
     void takeSelection(Programmer* p);
 
     void loadContent(Programmer *p);
+    void loadContentWithTracking(Programmer* p);
     void replaceContent(Programmer* p);
     void mergeContent(Programmer* p);
 

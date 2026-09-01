@@ -1051,7 +1051,7 @@ void UserInputManager::feedback(String address, var value, String origin="")
 	InterfaceManager::getInstance()->feedback(address, value, origin);
 }
 
-void UserInputManager::loadContentConductor()
+void UserInputManager::loadContentConductor(bool withTracking)
 {
 	Programmer* p = getProgrammer(true);
 	if (p== nullptr) return;
@@ -1059,5 +1059,6 @@ void UserInputManager::loadContentConductor()
 	if (e == nullptr) return;
 	Cuelist* c = Brain::getInstance()->getCuelistById(e->conductorCuelistId->intValue());
 	if (c == nullptr ) return;
-	c->loadContent(p);
+	if (withTracking)c->loadContentWithTracking(p);
+	else c->loadContent(p);
 }

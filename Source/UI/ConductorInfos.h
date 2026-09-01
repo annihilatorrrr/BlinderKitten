@@ -46,6 +46,7 @@ public:
     TextButton inspectBtn;
     TextButton updateBtn;
     TextButton loadCurrentCueBtn;
+    TextButton loadContentTrackingCueBtn;
 
     ControllableUI* mainIdSlider;
 

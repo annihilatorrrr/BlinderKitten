@@ -72,5 +72,5 @@ public:
     void resetFocus();
 
     void feedback(String address, var value, String origin);
-    void loadContentConductor();
+    void loadContentConductor(bool withTraking = false);
 };

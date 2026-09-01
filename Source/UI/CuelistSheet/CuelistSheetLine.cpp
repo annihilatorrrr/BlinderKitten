@@ -231,7 +231,8 @@ void CuelistSheetLine::showCuePopup()
 	p.addItem("Load and go", [this, targetCuelist]() {targetCuelist->nextCue->setValueFromTarget(targetCue); targetCuelist->go();});
 	p.addItem("Load and go instant", [this, targetCuelist]() {targetCuelist->nextCue->setValueFromTarget(targetCue); targetCuelist->go(0,0); });
 	p.addSeparator();
-	p.addItem("Load content",[this, targetCuelist](){targetCue->loadContent(UserInputManager::getInstance()->getProgrammer(true));});
+	p.addItem("Load content", [this, targetCuelist]() {targetCue->loadContent(UserInputManager::getInstance()->getProgrammer(true)); });
+	p.addItem("Load content with tracking", [this, targetCuelist]() {targetCue->loadContentWithTracking(UserInputManager::getInstance()->getProgrammer(true)); });
 	p.addSeparator();
 	p.addItem("Insert before", [this, targetCuelist]() {targetCuelist->insertProgCueBefore(targetCue); });
 	p.addItem("Insert after", [this, targetCuelist]() {targetCuelist->insertProgCueAfter(targetCue); });

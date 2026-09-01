@@ -1826,6 +1826,23 @@ void Cuelist::loadContent(Programmer *p)
 	}
 }
 
+void Cuelist::loadContentWithTracking()
+{
+	Programmer* p = UserInputManager::getInstance()->getProgrammer(true);
+	loadContentWithTracking(p);
+}
+
+void Cuelist::loadContentWithTracking(Programmer* p)
+{
+	ScopedLock lock(CScuesAB);
+	if (cueA != nullptr) {
+		cueA->loadContentWithTracking(p);
+	}
+	else if (cues.items.size() > 0) {
+		cues.items[0]->loadContentWithTracking(p);
+	}
+}
+
 void Cuelist::tempMergeProgrammer(Programmer* p, bool trackValues)
 {
 	if (p == nullptr) {return;}

@@ -96,6 +96,7 @@ void CuelistGridView::showContextMenu(int id)
         }
         p.addSeparator();
         p.addItem("Load content", [target]() {target->loadContent(UserInputManager::getInstance()->getProgrammer(true)); });
+        p.addItem("Load content with tracking", [target]() {target->loadContentWithTracking(UserInputManager::getInstance()->getProgrammer(true)); });
         p.addSeparator();
         p.addItem("Merge", [target]() {target->mergeWithProgrammer(UserInputManager::getInstance()->getProgrammer(true)); });
         p.addItem("Replace", [target]() {target->replaceWithProgrammer(UserInputManager::getInstance()->getProgrammer(true)); });
