@@ -225,7 +225,10 @@ var BundleAction::getValue()
         if (inFade->boolValue()) { n++; v += target->lastInFade; }
         if (outFade->boolValue()) { n++; v += target->lastOutFade; }
         if (n>0) v /= (float)n;
-        val = jmap(v, fadeDurationFrom->floatValue(), fadeDurationTo->floatValue(), 0.f, 1.f);
+        float fadeFrom = fadeDurationFrom->floatValue();
+        float fadeTo = fadeDurationTo->floatValue();
+        val = fadeFrom == fadeTo ? 0.0f : jmap(v, fadeFrom, fadeTo, 0.f, 1.f);
+
         }
 
     }

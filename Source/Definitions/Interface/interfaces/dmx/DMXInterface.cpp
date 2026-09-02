@@ -329,7 +329,7 @@ void DMXInterface::createThruControllable(ControllableContainer* cc)
 	p->canBeDisabledByUser = true;
 	p->saveValueOnly = false;
 	cc->addParameter(p);
-	p->setNiceName("Ouput Universe");
+	p->setNiceName("Output Universe");
 }
 
 void DMXInterface::afterLoadJSONDataInternal()

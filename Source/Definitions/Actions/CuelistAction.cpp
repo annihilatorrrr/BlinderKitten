@@ -431,7 +431,11 @@ var CuelistAction::getValue()
         break;
     
     case CL_OFFTIME: 
-        val = jmap(target->offFade->floatValue(), offTimeFrom->floatValue(), offTimeTo->floatValue(), 0.f, 1.f);
+        {
+        float offTimeMin = offTimeFrom->floatValue();
+        float offTimeMax = offTimeTo->floatValue();
+        val = offTimeMin == offTimeMax ? 0.0f : jmap(target->offFade->floatValue(), offTimeMin, offTimeMax, 0.f, 1.f);
+        }
         break;
     
     case CL_OFFTIME_FIXED:

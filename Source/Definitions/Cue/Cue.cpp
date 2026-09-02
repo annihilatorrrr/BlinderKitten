@@ -518,7 +518,7 @@ void Cue::loadContent(Programmer* p)
 void Cue::loadContentWithTracking(Programmer* p)
 {
 	if (!MessageManager::getInstance()->isThisTheMessageThread()) {
-		loadContentWithTracking(p);
+		MessageManager::getInstance()->callAsync([this, p](){loadContentWithTracking(p); });
 		return;
 	}
 	checkParentCuelist();
