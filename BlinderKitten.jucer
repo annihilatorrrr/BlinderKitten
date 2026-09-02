@@ -4,7 +4,7 @@
               addUsingNamespaceToJuceHeader="1" displaySplashScreen="0" jucerFormatVersion="1"
               compilerFlagSchemes="NewScheme" headerPath="../../Source&#10;../../Source/Definitions&#10;../../External/serial/include&#10;../../External/servus/include&#10;../../External/dnssd/include&#10;../../External/ois/include&#10;../../External/sdl/include&#10;../../External/libusb/include/libusb-1.0&#10;../../External/NDI/include"
               defines="JUCE_MODAL_LOOPS_PERMITTED=1&#10;_ITERATOR_DEBUG_LEVEL=1&#10;ORGANICUI_USE_WEBBROWSER=0"
-              version="1.0.1b96" companyName="Norbert Rostaing" companyCopyright="Norbert Rostaing"
+              version="1.0.1b97" companyName="Norbert Rostaing" companyCopyright="Norbert Rostaing"
               companyWebsite="http://blinderkitten.lighting" companyEmail="blinderkitten@gmail.com"
               bundleIdentifier="norbertrostaing.BlinderKitten">
   <MAINGROUP id="K7UlHD" name="BlinderKitten">
@@ -134,8 +134,7 @@
         <FILE id="NIOemw" name="Clock.h" compile="0" resource="0" file="Source/UI/Clock.h"/>
         <FILE id="Tcv001" name="TimecodeView.cpp" compile="1" resource="0"
               file="Source/UI/TimecodeView.cpp"/>
-        <FILE id="Tcv002" name="TimecodeView.h" compile="0" resource="0"
-              file="Source/UI/TimecodeView.h"/>
+        <FILE id="Tcv002" name="TimecodeView.h" compile="0" resource="0" file="Source/UI/TimecodeView.h"/>
         <FILE id="datAZp" name="ConductorInfos.cpp" compile="1" resource="0"
               file="Source/UI/ConductorInfos.cpp"/>
         <FILE id="mbq0lK" name="ConductorInfos.h" compile="0" resource="0"
