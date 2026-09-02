@@ -522,6 +522,20 @@ void Cue::loadContentWithTracking(Programmer* p)
 		return;
 	}
 	checkParentCuelist();
+
+	String type = parentCuelist->tracking->getValueData();
+
+	if (type == "call") {
+		LOGERROR("Load content with tracking call order is not implemented yet :/ ");
+		loadContent(p);
+		return;
+	}
+	if (type == "none") {
+		LOGWARNING("Tracking is not enabled for this cuelist !");
+		loadContent(p);
+		return;
+	}
+
 	Array<Cue*> cuesToLoad;
 	for (Cue* c : parentCuelist->cues.items) {
 		if (c->releaseCurrentTracking->boolValue()) cuesToLoad.clear();
